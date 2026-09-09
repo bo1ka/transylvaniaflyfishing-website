@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { url } from '../lib/url';
 import { site, photo, tel } from '../data/site';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 <Base title="Contact · Transylvania Fly Fishing" description="How to reach Transylvania Fly Fishing: email, phone, WhatsApp and social media, plus how to get to the Apuseni Mountains from Cluj-Napoca airport." current="/contact/">
   <section class="wrap page-head">
@@ -20,7 +21,7 @@ import { site, photo, tel } from '../data/site';
           <span>Phone</span><span>{site.phones.map((p, i) => <><a href={tel(p)}>{p}</a>{i < site.phones.length - 1 && <br />}</>)}</span>
           <span>WhatsApp</span><a href={`https://wa.me/${site.whatsapp.replace('+', '')}`} rel="noopener">{site.phones[0]}</a>
           <span>Company</span><span>{site.company}</span>
-          <span>Follow</span><span class="links">{site.social.map(([label, href]) => <a href={href} rel="noopener">{label}</a>)}</span>
+          <span>Follow</span><SocialLinks />
         </div>
       </div>
       <div class="prose">
@@ -37,5 +38,4 @@ import { site, photo, tel } from '../data/site';
   .stack { display: flex; flex-direction: column; gap: 16px; }
   .top { align-items: start; }
   .big { font-size: 15px; gap: 12px 20px; padding-top: 0; border-top: 0; }
-  .links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 </style>

@@ -6,11 +6,11 @@ export const site = {
   whatsapp: '+40724580508',
   season: '1 April to 30 September',
   social: [
-    ['Facebook page', 'https://www.facebook.com/transylvaniaflyfishing'],
-    ['Sebastian on Facebook', 'https://www.facebook.com/budeanu.sebastiaan'],
-    ['Instagram', 'https://www.instagram.com/sebastiandbudeanu/'],
-    ['YouTube', 'https://www.youtube.com/channel/UCJyxUU3s9G_vznLma96rAQQ'],
-    ['Twitter', 'https://twitter.com/FlyOutdoor'],
+    { label: 'Facebook page', href: 'https://www.facebook.com/transylvaniaflyfishing', icon: 'facebook' },
+    { label: 'Sebastian on Facebook', href: 'https://www.facebook.com/budeanu.sebastiaan', icon: 'facebook' },
+    { label: 'Instagram', href: 'https://www.instagram.com/sebastiandbudeanu/', icon: 'instagram' },
+    { label: 'YouTube', href: 'https://www.youtube.com/channel/UCJyxUU3s9G_vznLma96rAQQ', icon: 'youtube' },
+    { label: 'X (Twitter)', href: 'https://twitter.com/FlyOutdoor', icon: 'x' },
   ],
   partners: [
     ['EFFA', 'http://www.effa.info/', 'logo_effa'],

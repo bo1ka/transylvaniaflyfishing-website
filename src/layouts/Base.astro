@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { url } from '../lib/url';
 import { site, logo, tel } from '../data/site';
+import SocialLinks from '../components/SocialLinks.astro';
 
 interface Props {
   title: string;
@@ -73,9 +74,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <span>{site.company}</span>
           <a href={`mailto:${site.email}`}>{site.email}</a>
           <span>{site.phones.map((p, i) => <><a href={tel(p)}>{p}</a>{i < site.phones.length - 1 && ' · '}</>)}</span>
-          <span class="social">
-            {site.social.slice(0, 3).map(([label, href]) => <a href={href} rel="noopener">{label}</a>)}
-          </span>
+          <SocialLinks limit={3} direction="row" />
         </div>
         <div class="foot-col">
           <span class="foot-label">Partners</span>
@@ -117,7 +116,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   .foot-brand { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink); }
   .foot-links a, .foot a { color: var(--ink-2); }
   .foot a:hover { color: var(--accent); }
-  .social { display: flex; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
   .foot-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .partners { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .partners img { height: 36px; width: auto; display: block; }
