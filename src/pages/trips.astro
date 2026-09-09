@@ -6,7 +6,7 @@ const trips = (await getCollection('trips')).sort((a, b) => b.data.date.valueOf(
 const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const rendered = await Promise.all(trips.map(async (t) => ({ t, Content: (await render(t)).Content })));
 ---
-<Base title="Recent trips · Transylvania Fly Fishing" description="Notes and photos from recent guided fly fishing days on the Someșul Cald and in Bucovina." current="/trips/">
+<Base title="Recent trips · Transylvania Fly Fishing" description="Notes and photos from recent guided fly fishing days in the Apuseni Mountains and in Bucovina." current="/trips/">
   <section class="wrap page-head">
     <div class="stack">
       <div class="eyebrow">Recent trips</div>
