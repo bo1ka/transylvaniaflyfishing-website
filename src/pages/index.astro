@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { url } from '../lib/url';
+import { site, photo } from '../data/site';
 
 const trips = (await getCollection('trips'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -10,11 +11,11 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 ---
 <Base
   title="Transylvania Fly Fishing: guided fly fishing in the Apuseni Mountains and Bucovina, Romania"
-  description="Guided fly fishing for wild brown trout and grayling on Someșul Cald and the rivers of Bucovina, two hours from Cluj-Napoca airport. Catch and release, season 1 May to 15 September."
+  description="Guided fly fishing for wild brown trout and grayling on Someșul Cald and the rivers of Bucovina, two hours from Cluj-Napoca airport. Catch and release, season 1 April to 30 September."
   current="/"
 >
   <section class="hero">
-    <div class="hero-photo ph" data-caption="photo: Someșul Cald gorge, angler mid-cast"></div>
+    <img class="hero-photo" src={photo('river4')} alt="" />
     <div class="hero-shade"></div>
     <div class="wrap hero-body">
       <div class="hero-eyebrow">Wild trout and grayling · Romanian Carpathians</div>
@@ -30,11 +31,11 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   <section class="wrap section">
     <div class="intro">
       <p class="intro-big">Karst gorges, a 17 km lake, and rivers where nobody has ever stocked a rainbow. Brown trout and grayling the way they were born.</p>
-      <p class="lead">Transylvania Fly Fishing runs guided days and all-inclusive stays out of the Apuseni Nature Park, plus trips to Bucovina in the north. Season 1 May to 15 September. Equipment on request. Airport pickup from Cluj-Napoca.</p>
+      <p class="lead">Transylvania Fly Fishing runs guided days and all-inclusive stays out of the Apuseni Nature Park, plus trips to Bucovina in the north. Season {site.season}. Equipment on request. Airport pickup from Cluj-Napoca.</p>
     </div>
     <div class="grid-3">
       <article class="card">
-        <div class="ph ratio-43" data-caption="photo: Sebi netting a grayling for a client"></div>
+        <div class="frame ratio-43"><img class="photo" src={photo('catch12')} alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="eyebrow">Guided days</div>
           <h3>A day on the river</h3>
@@ -43,7 +44,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         </div>
       </article>
       <article class="card">
-        <div class="ph ratio-43" data-caption="photo: lodge terrace, river behind"></div>
+        <div class="frame ratio-43"><img class="photo" src={photo('river1')} alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="eyebrow">All-inclusive stays</div>
           <h3>Two days minimum, everything sorted</h3>
@@ -52,7 +53,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         </div>
       </article>
       <article class="card">
-        <div class="ph ratio-43" data-caption="photo: veterans on the bank, casting lesson"></div>
+        <div class="frame ratio-43"><img class="photo" src={photo('guide12')} alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="eyebrow">Veterans program</div>
           <h3>For those who serve and served</h3>
@@ -93,13 +94,15 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       <div class="stack">
         <div class="eyebrow">The water</div>
         <h2 class="h-big">Two regions, one guide.</h2>
-        <p class="lead">The Apuseni base sits on Someșul Cald, a catch and release river that runs 27 km from the Doda Pilii springs to the Beliș-Fântânele lake. Bucovina, in the northeast, adds the Bistrița Aurie and the Moldova valley for longer trips.</p>
+        <p class="lead">The Apuseni base sits on Someșul Cald, a catch and release river that runs 27 km from the Doda Pilii springs to the Beliș-Fântânele lake, with the Someșul Rece and the Criș rivers within reach. Bucovina, in the northeast, adds the Bistrița Aurie and the Moldova valley for longer trips.</p>
         <div class="rivers">
           <div class="rivers-head">Apuseni</div>
           <div class="rivers-head">Bucovina · Moldova</div>
           <div>Someșul Cald</div><div>Bistrița Aurie</div>
           <div>Doda Pilii headwaters</div><div>Moldova</div>
-          <div>Beliș-Fântânele lake</div><div>More to come</div>
+          <div>Someșul Rece</div><div></div>
+          <div>The Criș rivers</div><div></div>
+          <div>Beliș-Fântânele lake</div><div></div>
         </div>
         <a href={url('/rivers/')} class="link">River by river, on the map →</a>
       </div>
@@ -131,7 +134,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 
   <section class="wrap section">
     <div class="grid-2">
-      <div class="ph ratio-45 rounded" data-caption="photo: Sebastian, portrait on the bank"></div>
+      <div class="frame ratio-45"><img class="photo" src={photo('guide18')} alt="Sebastian Budeanu" loading="lazy" /></div>
       <div class="stack">
         <div class="eyebrow">Your guide</div>
         <h2 class="h-big">Sebastian Budeanu. Sebi, on the river.</h2>
@@ -145,12 +148,12 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   <section class="cta">
     <div class="wrap cta-body">
       <div class="stack">
-        <h2 class="cta-title">Season runs 1 May to 15 September.</h2>
+        <h2 class="cta-title">Season runs {site.season}.</h2>
         <p class="cta-lead">Send your dates and group size. Sebi replies personally with availability and a plan, usually within two days.</p>
       </div>
       <div class="cta-actions">
         <a href={url('/book/')} class="btn btn-cta">Book your trip</a>
-        <a href="mailto:office@transylvaniaflyfishing.com" class="btn btn-ghost">office@transylvaniaflyfishing.com</a>
+        <a href={`mailto:${site.email}`} class="btn btn-ghost">{site.email}</a>
       </div>
     </div>
   </section>
@@ -158,8 +161,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 
 <style>
   .hero { position: relative; min-height: min(86vh, 820px); display: flex; align-items: flex-end; background: #2C343C; color: var(--on-dark); overflow: hidden; }
-  .hero-photo { position: absolute; inset: 0; background: repeating-linear-gradient(135deg, #3A434B 0 14px, #333B43 14px 28px); }
-  .hero-photo::after { top: 20px; left: 24px; bottom: auto; color: var(--on-dark-2); }
+  .hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
   .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43, 49, 56, .12) 0%, rgba(43, 49, 56, .2) 40%, rgba(43, 49, 56, .82) 100%); }
   .hero-body { position: relative; width: 100%; padding-top: 120px; padding-bottom: clamp(48px, 8vw, 96px); display: flex; flex-direction: column; gap: 28px; }
   .hero-eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #CFE7DA; }
@@ -171,10 +173,6 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   .intro-big { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); line-height: 1.2; }
   .intro .lead { max-width: 46ch; }
 
-  .ratio-43 { aspect-ratio: 4 / 3; }
-  .ratio-32 { aspect-ratio: 3 / 2; }
-  .ratio-45 { aspect-ratio: 4 / 5; }
-  .rounded { border-radius: 6px; }
 
   .trip-photo { aspect-ratio: 3 / 2; width: 100%; object-fit: cover; display: block; }
   .trip-body { padding: 20px 22px 24px; gap: 8px; }

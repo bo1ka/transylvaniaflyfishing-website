@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, tel } from '../data/site';
+---
+<Base title="Book your trip · Transylvania Fly Fishing" description="Send a booking request with your dates, group size and trip type. Sebi replies personally with availability, a plan and the price." current="/book/">
+  <div class="wrap layout">
+    <div class="stack">
+      <div class="eyebrow">Book your trip</div>
+      <h1>Pick your dates. Sebi confirms.</h1>
+      <p class="lead">This is a request, not a charge. Sebi replies personally within two days with a plan, availability and the price. Nothing is paid until you both agree.</p>
+      <div class="tint season">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+        <div><strong>Season {site.season}</strong><br /><span>Packages are minimum two days and two anglers.</span></div>
+      </div>
+      <ol class="steps">
+        <li><strong>You send the request.</strong> Dates, anglers, what kind of trip. Two minutes.</li>
+        <li><strong>Sebi replies with the plan.</strong> River, lodging, price, pickup.</li>
+        <li><strong>You confirm.</strong> The dates are yours.</li>
+      </ol>
+      <div class="facts">
+        <span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a>
+        <span>WhatsApp</span><a href={tel(site.phones[0])}>{site.phones[0]}</a>
+        <span>Getting here</span><span>Fly to Cluj-Napoca (CLJ); about 2 h by car to the river, pickup on request</span>
+      </div>
+    </div>
+
+    <form class="panel form" id="booking" data-to={site.email}>
+      <div class="form-row">
+        <label class="field">First day<input type="date" name="from" required /></label>
+        <label class="field">Last day<input type="date" name="to" required /></label>
+      </div>
+      <label class="field">Trip type
+        <select name="type">
+          <option>All-inclusive stay (lodging, meals, licences, guiding)</option>
+          <option>Guided days only (I arrange my own lodging)</option>
+          <option>Veterans program</option>
+          <option>Course or something else (casting, tying, kids, custom)</option>
+        </select>
+      </label>
+      <div class="form-row">
+        <label class="field">Anglers<select name="anglers"><option>2</option><option>1</option><option>3</option><option>4 or more</option></select></label>
+        <label class="field">Region<select name="region"><option>Apuseni (Someșul Cald)</option><option>Bucovina</option><option>Let Sebi choose</option></select></label>
+      </div>
+      <div class="form-row">
+        <label class="field">Name<input type="text" name="name" required /></label>
+        <label class="field">Email<input type="email" name="email" required /></label>
+      </div>
+      <label class="field">Anything else<textarea name="message" rows="4" placeholder="Experience, equipment you need, airport pickup, non-fishing companions"></textarea></label>
+      <button type="submit" class="btn btn-accent">Send booking request</button>
+      <p class="fine">Opens your email app with the request filled in, addressed to {site.email}. No payment is taken on this site.</p>
+    </form>
+  </div>
+</Base>
+
+<script>
+  const form = document.getElementById('booking') as HTMLFormElement;
+  const to = form.dataset.to ?? '';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const lines = [
+      `Dates: ${d.get('from')} to ${d.get('to')}`,
+      `Trip type: ${d.get('type')}`,
+      `Anglers: ${d.get('anglers')}`,
+      `Region: ${d.get('region')}`,
+      `Name: ${d.get('name')}`,
+      `Email: ${d.get('email')}`,
+      '',
+      String(d.get('message') ?? ''),
+    ];
+    const subject = `Booking request: ${d.get('anglers')} anglers, ${d.get('from')} to ${d.get('to')}`;
+    location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+  });
+</script>
+
+<style>
+  .layout { padding-top: clamp(48px, 7vw, 96px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .stack { display: flex; flex-direction: column; gap: 20px; }
+  .stack h1 { font-size: clamp(40px, 5.5vw, 72px); line-height: 1; letter-spacing: -.015em; }
+  .stack .lead { max-width: 44ch; }
+  .season { display: flex; align-items: center; gap: 16px; color: var(--accent); font-size: 14px; }
+  .season div { color: var(--ink); }
+  .season span { color: var(--ink-2); font-size: 13px; }
+  .steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+  .steps strong { color: var(--ink); font-weight: 500; }
+  .form { display: flex; flex-direction: column; gap: 16px; }
+  .form .btn { align-self: flex-start; }
+  .fine { font-size: 12px; line-height: 1.5; color: var(--muted); }
+</style>

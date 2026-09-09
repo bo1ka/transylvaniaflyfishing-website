@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+const trips = (await getCollection('trips')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const rendered = await Promise.all(trips.map(async (t) => ({ t, Content: (await render(t)).Content })));
+---
+<Base title="Recent trips · Transylvania Fly Fishing" description="Notes and photos from recent guided fly fishing days on the Someșul Cald and in Bucovina." current="/trips/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Recent trips</div>
+      <h1>The river, this season.</h1>
+    </div>
+    <p class="lead">Short notes from guided days, posted by Sebi after the trip: who fished, what the water did, what worked. Every post links to the full album on Facebook.</p>
+  </section>
+
+  <div class="wrap page-body">
+    {rendered.map(({ t, Content }) => (
+      <article class="trip">
+        {t.data.photos.length
+          ? <div class="gallery">{t.data.photos.map((p) => <div class="frame ratio-32"><img class="photo" src={p} alt="" loading="lazy" /></div>)}</div>
+          : <div class="ph ratio-32 frame" data-caption="photo"></div>}
+        <div class="prose">
+          <div class="meta"><span>{fmt.format(t.data.date)}</span><span>·</span><span class="river">{t.data.river}</span></div>
+          <h2>{t.data.title}</h2>
+          <Content />
+          {(t.data.caught || t.data.flies) && (
+            <div class="facts">
+              {t.data.caught && <><span>Caught</span><span>{t.data.caught}</span></>}
+              {t.data.flies && <><span>Flies</span><span>{t.data.flies}</span></>}
+            </div>
+          )}
+          {t.data.facebook && <a href={t.data.facebook} class="btn btn-accent btn-sm self" rel="noopener">Full album on Facebook</a>}
+        </div>
+      </article>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .trip { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(24px, 4vw, 56px); align-items: start; padding-bottom: clamp(40px, 5vw, 72px); border-bottom: 1px solid var(--line); }
+  .trip:last-child { border-bottom: 0; }
+  .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .gallery .frame:first-child { grid-column: span 2; }
+  .meta { display: flex; gap: 10px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .river { color: var(--accent); }
+  .self { align-self: flex-start; margin-top: 8px; }
+</style>

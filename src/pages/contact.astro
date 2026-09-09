@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { site, photo, tel } from '../data/site';
+---
+<Base title="Contact · Transylvania Fly Fishing" description="How to reach Transylvania Fly Fishing: email, phone, WhatsApp and social media, plus how to get to the Apuseni Mountains from Cluj-Napoca airport." current="/contact/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Contact</div>
+      <h1>If you have any questions, we are here for you.</h1>
+    </div>
+    <p class="lead">Write, call or message on WhatsApp. For dates and packages the <a href={url('/book/')}>booking request</a> gets you a faster, more complete answer.</p>
+  </section>
+
+  <div class="wrap page-body">
+    <div class="grid-2 top">
+      <div class="panel">
+        <div class="facts big">
+          <span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a>
+          <span>Phone</span><span>{site.phones.map((p, i) => <><a href={tel(p)}>{p}</a>{i < site.phones.length - 1 && <br />}</>)}</span>
+          <span>WhatsApp</span><a href={`https://wa.me/${site.whatsapp.replace('+', '')}`} rel="noopener">{site.phones[0]}</a>
+          <span>Company</span><span>{site.company}</span>
+          <span>Follow</span><span class="links">{site.social.map(([label, href]) => <a href={href} rel="noopener">{label}</a>)}</span>
+        </div>
+      </div>
+      <div class="prose">
+        <h2>Getting here</h2>
+        <p>You can reach us by plane. Fly to Cluj-Napoca "Avram Iancu" International Airport; from there you can rent a car, or we can pick you up. The river is about two hours' drive from the airport.</p>
+        <p>If you prefer to travel by car, we send you complete itinerary information one week before your arrival.</p>
+      </div>
+    </div>
+    <div class="frame ratio-219"><img class="photo" src={photo('river1')} alt="" loading="lazy" /></div>
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .top { align-items: start; }
+  .big { font-size: 15px; gap: 12px 20px; padding-top: 0; border-top: 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+</style>

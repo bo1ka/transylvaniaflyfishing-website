@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { site, photo } from '../data/site';
+
+const apuseni = [
+  {
+    name: 'Someșul Cald',
+    tag: 'Catch and release',
+    photo: 'river4',
+    text: 'Springs high in the Apuseni Mountains, carves a gorge through the karst of the Western Carpathians, and after about 27 km reaches the Beliș-Fântânele dam lake. Depending on the lake level, 11 to 15 km of fishable river. About two hours from Cluj-Napoca airport.',
+    species: 'Wild brown trout, grayling',
+  },
+  {
+    name: 'Doda Pilii headwaters',
+    tag: 'Small water',
+    photo: 'river12',
+    text: 'The upper river and its side streams around Doda Pilii, inside the Apuseni Nature Park. Small, clear, technical water for short casts and careful wading.',
+    species: 'Wild brown trout',
+  },
+  {
+    name: 'Someșul Rece',
+    tag: 'Freestone',
+    photo: 'river3',
+    text: 'The sister river of the Someșul Cald, running through forest and gorge to meet it below the lake. A different character on the same trip.',
+    species: 'Wild brown trout, grayling',
+  },
+  {
+    name: 'The Criș rivers',
+    tag: 'Western Apuseni',
+    photo: 'river1',
+    text: 'The Criș valleys drain the western side of the Apuseni. Sebi guides on the upper reaches when conditions suit.',
+    species: 'Brown trout, grayling',
+  },
+  {
+    name: 'Beliș-Fântânele lake',
+    tag: 'Stillwater',
+    photo: 'landscape2',
+    text: 'Over 17 km long and more than 105 m deep, the dam lake that swallows the Someșul Cald. A hiding place for lake trout.',
+    species: 'Lake trout',
+  },
+];
+
+const bucovina = [
+  { name: 'Bistrița Aurie', tag: 'Bucovina', photo: 'catch14', text: 'The golden Bistrița, in the north of the country, for longer trips out of Câmpulung Moldovenesc.', species: 'Brown trout, grayling' },
+  { name: 'Moldova', tag: 'Moldova valley', photo: 'catch18', text: 'The Moldova river and its tributaries, wide gravel water under the Bucovina hills.', species: 'Brown trout, grayling' },
+];
+---
+<Base title="Rivers · Transylvania Fly Fishing" description="The rivers Transylvania Fly Fishing guides on: Someșul Cald, Someșul Rece, the Criș rivers and the Beliș lake in the Apuseni Mountains, and the Bistrița Aurie and Moldova in Bucovina." current="/rivers/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Rivers</div>
+      <h1>Apuseni in the west, Bucovina in the north.</h1>
+    </div>
+    <p class="lead">Every water Sebi guides. The population of salmonids here is natural: no stocked rainbows, only wild brown trout and painted-like grayling. Catch and release, barbless, licences arranged by the guide. Season {site.season}.</p>
+  </section>
+
+  <div class="wrap page-body">
+    <div class="frame ratio-219"><img class="photo" src={photo('river4')} alt="The Someșul Cald gorge" loading="lazy" /></div>
+
+    <div class="prose">
+      <h2>Apuseni</h2>
+      <p>The best river to fly fish here is the Someșul Cald, which carves its beauty through the spectacular karst landscapes of the Western Carpathians. Massive limestone, deep gorges, caves and a huge lake complete this destination. The surroundings are breathtaking, for fly fishers, for active nature lovers, or for simply relaxing under endless skies.</p>
+    </div>
+    <div class="grid-3">
+      {apuseni.map((r) => (
+        <article class="card">
+          <div class="frame ratio-32"><img class="photo" src={photo(r.photo)} alt={r.name} loading="lazy" /></div>
+          <div class="card-body">
+            <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
+            <p>{r.text}</p>
+            <div class="facts"><span>Species</span><span>{r.species}</span></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="prose">
+      <h2>Bucovina and the Moldova valley</h2>
+      <p>For longer trips Sebi takes guests to the north of the country, where his own story with fishing began.</p>
+    </div>
+    <div class="grid-3">
+      {bucovina.map((r) => (
+        <article class="card">
+          <div class="frame ratio-32"><img class="photo" src={photo(r.photo)} alt={r.name} loading="lazy" /></div>
+          <div class="card-body">
+            <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
+            <p>{r.text}</p>
+            <div class="facts"><span>Species</span><span>{r.species}</span></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="prose">
+      <h2>Why travel to Transylvania?</h2>
+      <p>Transylvania is a cultural centre for foreigners and locals alike, the country's largest and best known region, and where most of Romania's tourism lives. The medieval towns and architecture scattered through it are some of the oldest and best preserved in the country.</p>
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <div class="frame ratio-32"><img class="photo" src={photo('landscape2')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">Spectacular nature</div>
+          <h3>Apuseni Nature Park</h3>
+          <p>A real paradise of mountain ridges, mysterious caves and underground rivers, deep valleys and gorges. Caving, hiking, mountain biking, climbing, wildlife and bird watching. The Someșul Cald crosses the park from west to east.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="frame ratio-32"><img class="photo" src={photo('cluj')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">Well preserved history</div>
+          <h3>Cluj-Napoca</h3>
+          <p>The unofficial capital of Transylvania. No vampires, but castles, fortresses, botanical gardens, museums and parks, local specialties and international cuisine, and a vibrant arts scene from traditional to progressive.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="frame ratio-32"><img class="photo" src={photo('salina_turda')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">Unbelievable places</div>
+          <h3>Turda Salt Mine</h3>
+          <p>Ranked first among the coolest underground places in the world by Business Insider. Excavated by hand since the 13th century, now an underground museum and recreation centre with an amphitheatre, sports areas and a lake.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="tint prose">
+      <p>Want to fish two regions in one trip? Say so in the request and Sebi will plan the route. <a href={url('/book/')}>Book your trip</a></p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .tag { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+</style>

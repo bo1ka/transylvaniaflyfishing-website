@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { photo } from '../data/site';
+---
+<Base title="Veterans program · Transylvania Fly Fishing" description="A fly fishing program for military personnel, veterans, disabled veterans and their families, run by an Army veteran in the Romanian Carpathians. The first of its kind in Romania." current="/veterans/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Veterans program</div>
+      <h1>For all who are serving, and all who served.</h1>
+    </div>
+    <p class="lead">This program is dedicated to military personnel of every category, especially retired personnel, veterans, disabled veterans, their family members and their companions.</p>
+  </section>
+
+  <div class="wrap page-body">
+    <div class="frame ratio-219"><img class="photo" src={photo('river12')} alt="" loading="lazy" /></div>
+
+    <div class="grid-2 top">
+      <div class="prose">
+        <p>Introduced long ago by NATO member countries, with extraordinary results, this kind of program is new in our country. Outdoor Transylvania Fly Fishing Romania is the first and only company in Romania offering it to all categories of military personnel.</p>
+        <p>The owner is an Army veteran who served in theatres of operations together with personnel from the USA, the UK, Italy and other allied nations. His collaborators are veterans or retired military personnel too.</p>
+        <p>The program combines the passion for fly fishing with learning the skills of this noble recreational sport, aiming at relaxation and the physical and emotional recovery of everyone involved, in a fairy tale location. You will find a relaxed atmosphere with friendly, communicative people, and you will meet veterans who served in various theatres of operations as well as local people with a strong sense of camaraderie.</p>
+        <p>You and your family will feel welcome, and you will learn to practise this sport in a professional way, with real professionals. We provide all the support you need for a wonderful stay.</p>
+        <a href={url('/book/')} class="btn btn-accent">Ask about the program</a>
+      </div>
+      <div class="panel prose">
+        <h3>Included in the price</h3>
+        <ul>
+          <li>All the necessary reservations</li>
+          <li>Hotel or B&amp;B (3 star) or private lodge, three meals a day with traditional food and organic products</li>
+          <li>Fishing licence</li>
+          <li>24-hour fishing and tourist guiding</li>
+          <li>All the necessary fishing equipment: waders, boots, rods, reels, flies, vise, materials</li>
+          <li>Fishing and casting courses for beginners, and fly tying courses</li>
+          <li>Trips into the restricted area of the Apuseni Nature Park and to the Vălul Miresei waterfall</li>
+        </ul>
+        <h3>For a fee</h3>
+        <ul>
+          <li>Visits to Cluj-Napoca (museum and Botanical Garden tickets) or the Turda Salt Mine</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .top { align-items: start; }
+  .prose .btn { align-self: flex-start; margin-top: 8px; }
+</style>

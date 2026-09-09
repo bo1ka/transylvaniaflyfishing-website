@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { site, photo } from '../data/site';
+
+const dryFlies = [
+  'CDC gray, black, brown, orange, chartreuse, size 14 to 22',
+  'Elk Hair Caddis, size 14 to 22',
+  'Comparadun Mayfly cream, size 14 to 22',
+  'Parachute Adams gray, brown, black, green, size 14 to 22',
+  'Goddard Caddis, size 14 to 22',
+  'Fox Poopah green or tan, size 14 to 22',
+  'Light Cahill cream, size 14 to 22',
+  'EC Caddis, size 14 to 22',
+  'Foam Beetle, size 14 to 22',
+  'Blue Wing Olive, size 14 to 22',
+  'Black Hopper, size 14 to 22',
+  'Sebastiana Blue, size 14 to 22',
+  'Ants: simple, parachute or CDC in green, chartreuse, brown, pink, black, black and red, black and green, grey, size 14 to 22',
+];
+const nymphs = [
+  'Scuds cream or tan, size 16 to 22',
+  'Pheasant Tail, size 16 to 22',
+  'Birds Nest, size 16 to 22',
+  'Mayfly PMD Nymph, size 16 to 22',
+  'Micro Mayfly black, size 16 to 22',
+  'Gold Copper John, size 16 to 22',
+  'Poxyback Brown Stone, size 16 to 22',
+  'Poxyback Hares Ear, size 16 to 22',
+  'Black Beetle Nymph, size 16 to 22',
+  'Black Copper John, size 16 to 22',
+  'Red Copper John, size 16 to 22',
+];
+---
+<Base title="Guiding and packages · Transylvania Fly Fishing" description="Guided fly fishing days and all-inclusive packages on Someșul Cald and the rivers of Transylvania and Bucovina. What is included, how a day works, recommended flies." current="/guiding/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Guiding</div>
+      <h1>Hassle-free river days, to suit all tastes and needs.</h1>
+    </div>
+    <p class="lead">Transylvania Fly Fishing takes care of everything so you can concentrate on fishing. Best spots guidance, fly fishing advice, outdoor entertainment and accommodation arrangements, from one guide who knows every pool.</p>
+  </section>
+
+  <div class="wrap page-body">
+    <div class="frame ratio-219"><img class="photo" src={photo('guide18')} alt="Guiding on the Someșul Cald" loading="lazy" /></div>
+
+    <div class="grid-3">
+      <article class="card">
+        <div class="frame ratio-43"><img class="photo" src={photo('catch12')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">River guiding</div>
+          <h3>Your partner on the water</h3>
+          <p>The guide will be your best partner and friend throughout your stay. He organises the trip to fit your wish list and to the highest standards. Come as a guest, leave as a friend.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="frame ratio-43"><img class="photo" src={photo('cluj')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">Sightseeing tours</div>
+          <h3>Cluj-Napoca and beyond</h3>
+          <p>One-day trips to Cluj-Napoca, the Turda Salt Mine, the Apuseni Nature Park or the Vălul Miresei waterfall. For groups larger than four there are two guides, included in the price.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="frame ratio-43"><img class="photo" src={photo('guide12')} alt="" loading="lazy" /></div>
+        <div class="card-body">
+          <div class="eyebrow">New generations</div>
+          <h3>Courses for children and beginners</h3>
+          <p>Every year we run fly fishing and casting courses, with children as the main audience, teaching the secrets of the sport and why we protect nature. Beginners of any age are welcome. Survival and first aid trips too.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid-2 top">
+      <div class="prose">
+        <h2>The packages</h2>
+        <p>Packages are all-inclusive, for a minimum of two days and two people. The price covers accommodation, meals and drinks, fishing licences for the river or the lake, a professional guide available around the clock, and dry flies. The guide provides whatever you need for the duration of your stay.</p>
+        <p>All fishing equipment can be rented on request. Transportation is not included in the price. On request we organise one-day sightseeing trips so you also get to see the area.</p>
+        <p>The season runs {site.season}. Someșul Cald is a catch and release river only: brown trout, lake trout and grayling.</p>
+        <a href={url('/book/')} class="btn btn-accent">Book your trip</a>
+      </div>
+      <div class="panel prose">
+        <h3>Included in the price</h3>
+        <ul>
+          <li>All the necessary reservations</li>
+          <li>Hotel, B&amp;B (3 star) or private lodge, three meals a day with traditional food and organic products</li>
+          <li>Fishing licence</li>
+          <li>24-hour fishing and tourist guiding</li>
+          <li>Dry flies; full equipment (waders, boots, rods, reels, flies, vise, materials) on request</li>
+        </ul>
+        <h3>Not included</h3>
+        <ul>
+          <li>Transport to and from the area (airport pickup from Cluj-Napoca on request)</li>
+          <li>Tickets for museums, the Botanical Garden or the Turda Salt Mine</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>Recommended flies</h2>
+      <p>What works on Someșul Cald and the waters around it, from Sebi's own box.</p>
+    </div>
+    <div class="grid-2 top">
+      <div class="panel prose">
+        <h3>Dry flies</h3>
+        <ul>{dryFlies.map((f) => <li>{f}</li>)}</ul>
+      </div>
+      <div class="panel prose">
+        <h3>Nymphs</h3>
+        <ul>{nymphs.map((f) => <li>{f}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .top { align-items: start; }
+  .prose .btn { align-self: flex-start; margin-top: 8px; }
+</style>

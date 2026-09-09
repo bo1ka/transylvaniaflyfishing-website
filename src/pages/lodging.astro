@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import { photo } from '../data/site';
+
+const places = [
+  {
+    name: 'La Ivan Lodge',
+    kind: 'Traditional B&B, about 100 m from the river',
+    photo: 'river3',
+    text: [
+      'A traditional bed and breakfast, built and hosted by a hard-working, welcoming family in the very heart of Transylvania. The most rustic place in the area, and it comes with the fishing licence.',
+      'Two double rooms with private bathrooms, one double room with a shared bathroom across the hall, one double room with a sofa bed and shared bathroom, and a twin room in the attic. Extra folding beds on request. A shared, fully equipped open kitchen, dining and living area, and free wifi there.',
+      'Guests can cook their own meals; on request the host provides traditional lunch and dinner, all inclusive with drinks and coffee, between 20 June and 10 September. The whole place can be rented as an all-inclusive package.',
+    ],
+  },
+  {
+    name: 'Smida Park',
+    kind: 'Four-star mountain resort in Smida village',
+    photo: 'landscape2',
+    text: [
+      'The Smida Park mountain resort offers full hosting, accommodation and meals, in the most comfortable conditions in the area.',
+      'Ten rooms and thirty beds: six triple rooms, two double rooms, a two-room apartment and a four-bed room.',
+    ],
+  },
+  {
+    name: 'The Alex B&B',
+    kind: 'On the bank of the Someșul Cald',
+    photo: 'river1',
+    text: [
+      'A unique location right on the river. You cannot help but feel at home here.',
+      'All food is traditionally cooked and home made, with natural and organic products. Something special to eat can be arranged without any problem.',
+    ],
+  },
+];
+---
+<Base title="Lodging · Transylvania Fly Fishing" description="Where you stay on a Transylvania Fly Fishing trip: family-run guest houses and a mountain resort by the Someșul Cald, in the Apuseni Mountains." current="/lodging/">
+  <section class="wrap page-head">
+    <div class="stack">
+      <div class="eyebrow">Lodging</div>
+      <h1>A little of Transylvanian hospitality, in the very heart of it.</h1>
+    </div>
+    <p class="lead">The guest houses in the area are family businesses, clean and rustic, and the hosts will do their best to make you feel at home. Prices suit every budget, and every place is a short walk from the water. We arrange it all as part of your package.</p>
+  </section>
+
+  <div class="wrap page-body">
+    {places.map((p) => (
+      <article class="place">
+        <div class="frame ratio-32"><img class="photo" src={photo(p.photo)} alt={p.name} loading="lazy" /></div>
+        <div class="prose">
+          <div class="eyebrow">{p.kind}</div>
+          <h2>{p.name}</h2>
+          {p.text.map((t) => <p>{t}</p>)}
+        </div>
+      </article>
+    ))}
+    <div class="tint prose">
+      <p>Not sure which one fits? Tell Sebi how many you are and how you like to travel, and he will place you. <a href={url('/book/')}>Book your trip</a></p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+  .place { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(24px, 4vw, 56px); align-items: start; }
+</style>
