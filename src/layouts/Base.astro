@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string;
+}
+
+const { title, description, current = '' } = Astro.props;
+const nav = [
+  ['/', 'Home'],
+  ['/guiding/', 'Guiding'],
+  ['/rivers/', 'Rivers'],
+  ['/trips/', 'Recent trips'],
+  ['/veterans/', 'Veterans'],
+  ['/lodging/', 'Lodging'],
+  ['/contact/', 'Contact'],
+];
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a href="/" class="brand">
+          <span class="brand-name">Transylvania Fly Fishing</span>
+          <span class="brand-sub">Apuseni · Bucovina</span>
+        </a>
+        <input type="checkbox" id="menu" class="sr-only" />
+        <label for="menu" class="menu-toggle">Menu</label>
+        <nav class="nav">
+          {nav.map(([href, label]) => (
+            <a href={href} class:list={['nav-link', { active: href === current }]}>{label}</a>
+          ))}
+          <a href="/book/" class="btn btn-accent btn-sm">Book your trip</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap foot">
+        <div class="foot-col">
+          <span class="foot-brand">Transylvania Fly Fishing</span>
+          <span>Guided fly fishing in the Apuseni Mountains and Bucovina, Romania. Catch and release only.</span>
+        </div>
+        <div class="foot-col foot-links">
+          {nav.slice(1).map(([href, label]) => <a href={href}>{label}</a>)}
+        </div>
+        <div class="foot-col">
+          <span>Outdoor Transylvania Fly Fishing Romania S.R.L.</span>
+          <a href="mailto:office@transylvaniaflyfishing.com">office@transylvaniaflyfishing.com</a>
+          <span><a href="tel:+40724580508">+40 724 580 508</a> · <a href="tel:+40751584644">+40 751 584 644</a></span>
+          <span class="social">
+            <a href="https://www.facebook.com/transylvaniaflyfishing">Facebook</a>
+            <a href="https://www.instagram.com/sebastiandbudeanu/">Instagram</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 20; background: rgba(245, 242, 236, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .bar { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: baseline; gap: 10px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand-name { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+  .brand-sub { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .nav { display: flex; gap: 26px; align-items: center; }
+  .nav-link { font-size: 14px; letter-spacing: .02em; color: var(--ink); padding: 6px 0; border-bottom: 2px solid transparent; }
+  .nav-link:hover { color: var(--accent); text-decoration: none; }
+  .nav-link.active { border-bottom-color: var(--accent); }
+  .menu-toggle { display: none; }
+
+  @media (max-width: 1080px) {
+    .brand-sub { display: none; }
+    .menu-toggle { display: inline-flex; align-items: center; border: 1px solid #CFC8BC; border-radius: 999px; padding: 10px 16px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; min-height: 44px; cursor: pointer; }
+    .nav { display: none; position: absolute; left: 0; right: 0; top: 68px; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 12px var(--pad-x) 20px; }
+    #menu:checked ~ .nav { display: flex; }
+    .nav-link { font-family: var(--serif); font-size: 26px; padding: 14px 0; border-bottom: 1px solid var(--line-3); }
+    .nav-link.active { border-bottom-color: var(--line-3); color: var(--accent); }
+    .nav .btn { margin-top: 16px; }
+  }
+
+  .site-footer { margin-top: var(--section); border-top: 1px solid var(--line); background: var(--bg-2); }
+  .foot { padding-top: 40px; padding-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 28px; font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+  .foot-col { display: flex; flex-direction: column; gap: 6px; }
+  .foot-brand { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink); }
+  .foot-links a, .foot a { color: var(--ink-2); }
+  .foot a:hover { color: var(--accent); }
+  .social { display: flex; gap: 14px; margin-top: 6px; }
+</style>
