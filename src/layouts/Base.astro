@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { url } from '../lib/url';
 
 interface Props {
   title: string;
@@ -31,7 +32,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" />
@@ -39,7 +40,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <body>
     <header class="site-header">
       <div class="wrap bar">
-        <a href="/" class="brand">
+        <a href={url('/')} class="brand">
           <span class="brand-name">Transylvania Fly Fishing</span>
           <span class="brand-sub">Apuseni · Bucovina</span>
         </a>
@@ -47,9 +48,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <label for="menu" class="menu-toggle">Menu</label>
         <nav class="nav">
           {nav.map(([href, label]) => (
-            <a href={href} class:list={['nav-link', { active: href === current }]}>{label}</a>
+            <a href={url(href)} class:list={['nav-link', { active: href === current }]}>{label}</a>
           ))}
-          <a href="/book/" class="btn btn-accent btn-sm">Book your trip</a>
+          <a href={url('/book/')} class="btn btn-accent btn-sm">Book your trip</a>
         </nav>
       </div>
     </header>
@@ -65,7 +66,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <span>Guided fly fishing in the Apuseni Mountains and Bucovina, Romania. Catch and release only.</span>
         </div>
         <div class="foot-col foot-links">
-          {nav.slice(1).map(([href, label]) => <a href={href}>{label}</a>)}
+          {nav.slice(1).map(([href, label]) => <a href={url(href)}>{label}</a>)}
         </div>
         <div class="foot-col">
           <span>Outdoor Transylvania Fly Fishing Romania S.R.L.</span>

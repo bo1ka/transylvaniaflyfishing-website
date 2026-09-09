@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
 
 export function getStaticPaths() {
   return [
@@ -21,7 +22,7 @@ const { title } = Astro.props;
     <div class="eyebrow">Coming next</div>
     <h1>{title}</h1>
     <p class="lead">This page is being built. Until then, write to <a href="mailto:office@transylvaniaflyfishing.com">office@transylvaniaflyfishing.com</a> or call <a href="tel:+40724580508">+40 724 580 508</a>.</p>
-    <a href="/" class="link">← Back home</a>
+    <a href={url('/')} class="link">← Back home</a>
   </section>
 </Base>
 

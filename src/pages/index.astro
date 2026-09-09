@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { url } from '../lib/url';
 
 const trips = (await getCollection('trips'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -20,8 +21,8 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       <h1>Wild water, two hours from Cluj airport.</h1>
       <p class="hero-lead">Guided fly fishing on Someșul Cald in the Apuseni Mountains and on the rivers of Bucovina, with a guide who has fished them all his life. Catch and release, wild fish only.</p>
       <div class="hero-actions">
-        <a href="/book/" class="btn btn-light">Book your trip</a>
-        <a href="/rivers/" class="btn btn-ghost">See the rivers</a>
+        <a href={url('/book/')} class="btn btn-light">Book your trip</a>
+        <a href={url('/rivers/')} class="btn btn-ghost">See the rivers</a>
       </div>
     </div>
   </section>
@@ -38,7 +39,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
           <div class="eyebrow">Guided days</div>
           <h3>A day on the river</h3>
           <p>Walk and wade with Sebi on the stretch that fits the water and your casting. Licence, flies and the photograph included.</p>
-          <a href="/guiding/" class="link">Guiding and rates →</a>
+          <a href={url('/guiding/')} class="link">Guiding and rates →</a>
         </div>
       </article>
       <article class="card">
@@ -47,7 +48,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
           <div class="eyebrow">All-inclusive stays</div>
           <h3>Two days minimum, everything sorted</h3>
           <p>Lodging by the river, three meals a day, licences, guiding around the clock, dry flies. You get to Cluj; the rest is ours.</p>
-          <a href="/lodging/" class="link">Stays and lodging →</a>
+          <a href={url('/lodging/')} class="link">Stays and lodging →</a>
         </div>
       </article>
       <article class="card">
@@ -56,7 +57,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
           <div class="eyebrow">Veterans program</div>
           <h3>For those who serve and served</h3>
           <p>The first program of its kind in Romania, run by a veteran for veterans, retired personnel and their families. Fishing, casting and tying courses, and time to breathe.</p>
-          <a href="/veterans/" class="link">About the program →</a>
+          <a href={url('/veterans/')} class="link">About the program →</a>
         </div>
       </article>
     </div>
@@ -68,7 +69,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         <div class="eyebrow">Recent trips</div>
         <h2>From the river, this season.</h2>
       </div>
-      <a href="/trips/" class="link">All trips →</a>
+      <a href={url('/trips/')} class="link">All trips →</a>
     </div>
     <div class="grid-3">
       {trips.map((t) => (
@@ -100,7 +101,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
           <div>Doda Pilii headwaters</div><div>Moldova</div>
           <div>Beliș-Fântânele lake</div><div>More to come</div>
         </div>
-        <a href="/rivers/" class="link">River by river, on the map →</a>
+        <a href={url('/rivers/')} class="link">River by river, on the map →</a>
       </div>
       <div class="map-card">
         <svg viewBox="0 0 600 440" role="img" aria-label="Schematic map of the two guiding regions in Romania">
@@ -136,7 +137,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         <h2 class="h-big">Sebastian Budeanu. Sebi, on the river.</h2>
         <p class="bio">He learned to fish on a hazel rod with his grandfather on a river in the north of the country, and learned why the fish goes back. Twenty-seven years in the Romanian Army, serving alongside American, British and Italian units, taught him the rest: trust, camaraderie, and how to look after people outdoors.</p>
         <p class="bio">Today he guides on Someșul Cald and in Bucovina, teaches children and beginners every summer, and runs Romania's only fly fishing program for veterans. Come as a guest, leave as a friend.</p>
-        <a href="/guiding/" class="link">How a guided day works →</a>
+        <a href={url('/guiding/')} class="link">How a guided day works →</a>
       </div>
     </div>
   </section>
@@ -148,7 +149,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         <p class="cta-lead">Send your dates and group size. Sebi replies personally with availability and a plan, usually within two days.</p>
       </div>
       <div class="cta-actions">
-        <a href="/book/" class="btn btn-cta">Book your trip</a>
+        <a href={url('/book/')} class="btn btn-cta">Book your trip</a>
         <a href="mailto:office@transylvaniaflyfishing.com" class="btn btn-ghost">office@transylvaniaflyfishing.com</a>
       </div>
     </div>
