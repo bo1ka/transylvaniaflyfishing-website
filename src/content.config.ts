@@ -6,7 +6,7 @@ const trips = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    river: z.enum(['Someșul Cald', 'Doda Pilii', 'Bucovina', 'Courses', 'Veterans', 'Other']),
+    river: z.enum(['Someșul Cald', 'Doda Pilii', 'Apuseni', 'Bucovina', 'Courses', 'Veterans', 'Other']),
     photos: z.array(z.string()).default([]),
     facebook: z.string().url().optional(),
     caught: z.string().optional(),
