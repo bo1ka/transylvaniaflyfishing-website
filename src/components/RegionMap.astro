@@ -1,0 +1,132 @@
+---
+/**
+ * Map of one guiding region. Each region has its own drawing so the two never share a frame.
+ * River courses, lake outlines and town positions come from OpenStreetMap (src/data/regionMaps.json),
+ * simplified and projected; labels are placed by hand here.
+ */
+import data from '../data/regionMaps.json';
+
+interface Props {
+  region: 'apuseni' | 'bucovina';
+}
+
+type Label = { text: string; x: number; y: number; anchor?: 'start' | 'middle' | 'end' };
+
+const layout: Record<Props['region'], {
+  label: string;
+  /** Rivers Sebi guides on: drawn bold, with moving water. */
+  guided: string[];
+  /** Other rivers shown only for orientation. */
+  context: string[];
+  towns: (Label & { name: string; pulse?: boolean })[];
+  names: Label[];
+  minor: Label[];
+  caption: string;
+  /** Caption and data credit sit along the bottom unless a river runs there. */
+  top?: boolean;
+}> = {
+  apuseni: {
+    label: 'Map of the Apuseni rivers: Someșul Cald, Someșul Rece and the Beliș-Fântânele lake, west of Cluj-Napoca',
+    guided: ['Someșul Cald', 'Someșul Rece', 'Crișul Repede'],
+    context: ['Someșul Mic'],
+    towns: [
+      { name: 'Cluj-Napoca', text: 'Cluj-Napoca', x: 552, y: 190, anchor: 'middle', pulse: true },
+      { name: 'Gilău', text: 'Gilău', x: 446, y: 161, anchor: 'middle' },
+      { name: 'Beliș', text: 'Beliș', x: 256, y: 218, anchor: 'middle' },
+      { name: 'Huedin', text: 'Huedin', x: 264, y: 94 },
+      { name: 'Doda Pilii', text: 'Doda Pilii', x: 152, y: 247, anchor: 'end' },
+    ],
+    names: [
+      { text: 'Someșul Cald', x: 296, y: 181 },
+      { text: 'Someșul Rece', x: 322, y: 297 },
+      { text: 'Crișul Repede', x: 200, y: 57 },
+    ],
+    minor: [
+      { text: 'Beliș-Fântânele lake', x: 262, y: 305, anchor: 'end' },
+      { text: 'Someșul Mic', x: 462, y: 217 },
+    ],
+    caption: 'APUSENI',
+  },
+  bucovina: {
+    label: 'Map of the Bucovina rivers: the Bistrița Aurie down to Vatra Dornei and the Moldova through Câmpulung Moldovenesc',
+    guided: ['Bistrița Aurie', 'Moldova'],
+    context: ['Bistrița', 'Dorna'],
+    towns: [
+      { name: 'Câmpulung Moldovenesc', text: 'Câmpulung Moldovenesc', x: 318, y: 188, pulse: true },
+      { name: 'Gura Humorului', text: 'Gura Humorului', x: 530, y: 122, anchor: 'middle' },
+      { name: 'Vatra Dornei', text: 'Vatra Dornei', x: 232, y: 343, anchor: 'middle' },
+      { name: 'Cârlibaba', text: 'Cârlibaba', x: 101, y: 104, anchor: 'middle' },
+      { name: 'Iacobeni', text: 'Iacobeni', x: 192, y: 262, anchor: 'end' },
+    ],
+    names: [
+      { text: 'Bistrița Aurie', x: 148, y: 210, anchor: 'end' },
+      { text: 'Moldova', x: 232, y: 92 },
+    ],
+    minor: [
+      { text: 'Bistrița', x: 330, y: 310 },
+      { text: 'Dorna', x: 138, y: 298 },
+    ],
+    caption: 'BUCOVINA',
+    top: true,
+  },
+};
+
+const { region } = Astro.props;
+const map = data[region];
+const cfg = layout[region];
+const rivers = map.rivers as Record<string, string>;
+const towns = map.towns as Record<string, number[]>;
+// Both maps share one frame size so they line up side by side; the shorter drawing is centred in it.
+const heightOf = (m: { viewBox: string }) => Number(m.viewBox.split(' ')[3]);
+const frame = Math.max(...Object.values(data).map(heightOf));
+const top = (heightOf(map) - frame) / 2;
+const viewBox = `0 ${top} 600 ${frame}`;
+const edge = cfg.top ? top + 30 : top + frame - 18;
+---
+<div class="region-map contours">
+  <svg viewBox={viewBox} role="img" aria-label={cfg.label}>
+    <g class="context" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      {cfg.context.map((name) => <path d={rivers[name]}></path>)}
+    </g>
+    {map.lakes.map((d) => <path class="lake" d={d}></path>)}
+    <g class="rivers-line" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      {cfg.guided.map((name) => <path pathLength="1" d={rivers[name]}></path>)}
+    </g>
+    <g class="flow" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      {cfg.guided.map((name) => <path d={rivers[name]}></path>)}
+    </g>
+    {cfg.towns.map((t) => (
+      <>
+        {t.pulse && <circle class="pulse" cx={towns[t.name][0]} cy={towns[t.name][1]} r="5"></circle>}
+        <circle class="dot" cx={towns[t.name][0]} cy={towns[t.name][1]} r={t.pulse ? 5 : 4}></circle>
+        <text class="town" x={t.x} y={t.y} text-anchor={t.anchor ?? 'start'}>{t.text}</text>
+      </>
+    ))}
+    {cfg.minor.map((n) => <text class="minor" x={n.x} y={n.y} text-anchor={n.anchor ?? 'start'}>{n.text}</text>)}
+    {cfg.names.map((n) => <text class="name" x={n.x} y={n.y} text-anchor={n.anchor ?? 'start'}>{n.text}</text>)}
+    <text class="caption" x="22" y={edge}>{cfg.caption}</text>
+    <text class="credit" x="578" y={edge} text-anchor="end">Map data © OpenStreetMap contributors</text>
+  </svg>
+</div>
+
+<style>
+  .region-map { background-color: var(--dark); border-radius: var(--radius); padding: clamp(10px, 2vw, 22px); }
+  svg { width: 100%; height: auto; display: block; }
+  .context path { stroke: #4C6B60; stroke-width: 2; }
+  .lake { fill: #3F8F70; stroke: #4FB08A; stroke-width: .8; stroke-linejoin: round; }
+  .rivers-line path { stroke: #4FB08A; stroke-width: 4.2; }
+  .dot { fill: #F5F2EC; }
+  .town { font: 16px var(--sans); fill: #C2CBC6; paint-order: stroke; stroke: var(--dark); stroke-width: 3px; }
+  .minor { font: italic 16px var(--serif); fill: #8FA39B; }
+  .name { font: italic 500 23px var(--serif); fill: #F5F2EC; paint-order: stroke; stroke: var(--dark); stroke-width: 3px; }
+  .caption { font: 13px var(--sans); letter-spacing: 2.5px; fill: #7A8A84; }
+  .credit { font: 10px var(--sans); fill: #62746D; }
+
+  /* Rivers draw themselves in when the map scrolls into view, then water keeps moving downstream. */
+  :global([data-reveal]) .rivers-line path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.6s var(--ease) .35s; }
+  :global([data-reveal].is-in) .rivers-line path { stroke-dashoffset: 0; }
+  .flow path { stroke: #E4F7EE; stroke-width: 1.5; stroke-dasharray: 3 19; opacity: .85; animation: flow 2.6s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -22; } }
+  .pulse { fill: none; stroke: #F5F2EC; stroke-width: .9; transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-out infinite; }
+  @keyframes pulse { from { transform: scale(1); opacity: .9; } to { transform: scale(4.5); opacity: 0; } }
+</style>

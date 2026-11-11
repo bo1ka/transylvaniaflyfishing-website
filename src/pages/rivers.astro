@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
+import RegionMap from '../components/RegionMap.astro';
 import { url } from '../lib/url';
 import { site } from '../data/site';
 
@@ -56,74 +57,103 @@ const bucovina = [
     <p class="lead">Every water Sebi guides, from the karst gorges of the Apuseni to the valleys of Bucovina. Wild brown trout and grayling. Catch and release, barbless, licences arranged by the guide. Season {site.season}.</p>
   </section>
 
+  <div class="wrap">
+    <nav class="jump" aria-label="Regions">
+      <a href="#apuseni"><span>01</span>Apuseni</a>
+      <a href="#bucovina"><span>02</span>Bucovina</a>
+    </nav>
+  </div>
+
+  <section id="apuseni" class="region">
+    <div class="wrap region-body">
+      <div class="grid-2 region-head">
+        <div class="prose">
+          <div class="region-no" aria-hidden="true">01</div>
+          <h2>Apuseni</h2>
+          <p>The rivers of the Apuseni carve their way through the spectacular karst landscapes of the Western Carpathians. Massive limestone, deep gorges, caves and a mountain lake complete this destination. The surroundings are breathtaking, for fly fishers, for active nature lovers, or for simply relaxing under endless skies.</p>
+          <div class="facts">
+            <span>Waters</span><span>{apuseni.map((r) => r.name).join(', ')}</span>
+            <span>Getting there</span><span>About two hours from Cluj-Napoca airport</span>
+          </div>
+        </div>
+        <RegionMap region="apuseni" />
+      </div>
+      <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="river4" alt="Apuseni river gorge" /></div>
+      <div class="grid-3">
+        {apuseni.map((r) => (
+          <article class="card">
+            <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
+            <div class="card-body">
+              <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
+              <p>{r.text}</p>
+              <div class="facts"><span>Species</span><span>{r.species}</span></div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="prose">
+        <h2>Why travel to Transylvania?</h2>
+        <p>Transylvania is a cultural centre for foreigners and locals alike, the country's largest and best known region, and where most of Romania's tourism lives. The medieval towns and architecture scattered through it are some of the oldest and best preserved in the country.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="landscape2" alt="" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Spectacular nature</div>
+            <h3>Apuseni Nature Park</h3>
+            <p>A real paradise of mountain ridges, mysterious caves and underground rivers, deep valleys and gorges. Caving, hiking, mountain biking, climbing, wildlife and bird watching. The Someșul Cald crosses the park from west to east.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="cluj" alt="" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Well preserved history</div>
+            <h3>Cluj-Napoca</h3>
+            <p>The unofficial capital of Transylvania. No vampires, but castles, fortresses, botanical gardens, museums and parks, local specialties and international cuisine, and a vibrant arts scene from traditional to progressive.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="salina_turda" alt="" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Unbelievable places</div>
+            <h3>Turda Salt Mine</h3>
+            <p>Ranked first among the coolest underground places in the world by Business Insider. Excavated by hand since the 13th century, now an underground museum and recreation centre with an amphitheatre, sports areas and a lake.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="bucovina" class="region region-dark contours">
+    <div class="wrap region-body">
+      <div class="grid-2 region-head">
+        <div class="prose">
+          <div class="region-no" aria-hidden="true">02</div>
+          <h2>Bucovina and the Moldova valley</h2>
+          <p>For longer trips Sebi takes guests to the north of the country, where his own story with fishing began.</p>
+          <div class="facts">
+            <span>Waters</span><span>{bucovina.map((r) => r.name).join(', ')}</span>
+            <span>Getting there</span><span>Longer trips out of Câmpulung Moldovenesc</span>
+          </div>
+        </div>
+        <RegionMap region="bucovina" />
+      </div>
+      <div class="grid-3">
+        {bucovina.map((r) => (
+          <article class="card">
+            <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
+            <div class="card-body">
+              <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
+              <p>{r.text}</p>
+              <div class="facts"><span>Species</span><span>{r.species}</span></div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <div class="wrap page-body">
-    <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="river4" alt="Apuseni river gorge" /></div>
-
-    <div class="prose">
-      <h2>Apuseni</h2>
-      <p>The rivers of the Apuseni carve their way through the spectacular karst landscapes of the Western Carpathians. Massive limestone, deep gorges, caves and a mountain lake complete this destination. The surroundings are breathtaking, for fly fishers, for active nature lovers, or for simply relaxing under endless skies.</p>
-    </div>
-    <div class="grid-3">
-      {apuseni.map((r) => (
-        <article class="card">
-          <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
-          <div class="card-body">
-            <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
-            <p>{r.text}</p>
-            <div class="facts"><span>Species</span><span>{r.species}</span></div>
-          </div>
-        </article>
-      ))}
-    </div>
-
-    <div class="prose">
-      <h2>Bucovina and the Moldova valley</h2>
-      <p>For longer trips Sebi takes guests to the north of the country, where his own story with fishing began.</p>
-    </div>
-    <div class="grid-3">
-      {bucovina.map((r) => (
-        <article class="card">
-          <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
-          <div class="card-body">
-            <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
-            <p>{r.text}</p>
-            <div class="facts"><span>Species</span><span>{r.species}</span></div>
-          </div>
-        </article>
-      ))}
-    </div>
-
-    <div class="prose">
-      <h2>Why travel to Transylvania?</h2>
-      <p>Transylvania is a cultural centre for foreigners and locals alike, the country's largest and best known region, and where most of Romania's tourism lives. The medieval towns and architecture scattered through it are some of the oldest and best preserved in the country.</p>
-    </div>
-    <div class="grid-3">
-      <article class="card">
-        <div class="frame ratio-32"><Photo class="photo" src="landscape2" alt="" /></div>
-        <div class="card-body">
-          <div class="eyebrow">Spectacular nature</div>
-          <h3>Apuseni Nature Park</h3>
-          <p>A real paradise of mountain ridges, mysterious caves and underground rivers, deep valleys and gorges. Caving, hiking, mountain biking, climbing, wildlife and bird watching. The Someșul Cald crosses the park from west to east.</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="frame ratio-32"><Photo class="photo" src="cluj" alt="" /></div>
-        <div class="card-body">
-          <div class="eyebrow">Well preserved history</div>
-          <h3>Cluj-Napoca</h3>
-          <p>The unofficial capital of Transylvania. No vampires, but castles, fortresses, botanical gardens, museums and parks, local specialties and international cuisine, and a vibrant arts scene from traditional to progressive.</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="frame ratio-32"><Photo class="photo" src="salina_turda" alt="" /></div>
-        <div class="card-body">
-          <div class="eyebrow">Unbelievable places</div>
-          <h3>Turda Salt Mine</h3>
-          <p>Ranked first among the coolest underground places in the world by Business Insider. Excavated by hand since the 13th century, now an underground museum and recreation centre with an amphitheatre, sports areas and a lake.</p>
-        </div>
-      </article>
-    </div>
-
     <div class="tint prose">
       <p>Want to fish two regions in one trip? Say so in the request and Sebi will plan the route. <a href={url('/book/')}>Book your trip</a></p>
     </div>
@@ -134,4 +164,28 @@ const bucovina = [
   .stack { display: flex; flex-direction: column; gap: 16px; }
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .tag { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+  /* Jump links: one per region. */
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 28px; }
+  .jump a { display: inline-flex; align-items: baseline; gap: 10px; min-height: 44px; padding: 10px 20px; border: 1px solid var(--line); border-radius: var(--btn-radius); background: var(--surface); color: var(--ink); font-family: var(--serif); font-size: 20px; transition: border-color .25s, transform .25s var(--ease), box-shadow .25s; }
+  .jump a:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .jump span { font-family: var(--sans); font-size: 11px; letter-spacing: .12em; color: var(--accent); }
+
+  /* Each region is its own block: its own map, facts and rivers, with nothing shared between the two. */
+  .region { scroll-margin-top: 76px; padding: clamp(48px, 7vw, 96px) 0; }
+  .region-body { display: flex; flex-direction: column; gap: clamp(32px, 4.5vw, 64px); }
+  .region-head { align-items: center; }
+  .region-no { font-family: var(--serif); font-style: italic; font-size: clamp(48px, 6vw, 84px); line-height: .8; color: var(--accent); opacity: .5; }
+  .region-head h2 { font-size: clamp(38px, 5vw, 64px); margin-top: 0; }
+  .region-head .facts { margin-top: 8px; max-width: 52ch; }
+
+  .region-dark { background-color: var(--dark); color: var(--on-dark); }
+  .region-dark .prose { color: var(--on-dark-2); }
+  .region-dark .prose h2 { color: var(--on-dark); }
+  .region-dark .region-no { color: var(--accent-on-dark); opacity: .7; }
+  .region-dark .region-head .facts { border-top-color: rgba(245, 242, 236, .16); color: var(--on-dark); }
+  .region-dark .region-head .facts span:nth-child(odd) { color: var(--on-dark-2); }
+  .region-dark :global(.region-map) { background-color: var(--dark-2); box-shadow: inset 0 0 0 1px rgba(245, 242, 236, .08); }
+  .region-dark .card { border-color: transparent; color: var(--ink); }
+  .region-dark + .page-body { padding-top: clamp(40px, 5vw, 72px); }
 </style>

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
+import RegionMap from '../components/RegionMap.astro';
 import { getCollection } from 'astro:content';
 import { url } from '../lib/url';
 import { site } from '../data/site';
@@ -12,7 +13,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 ---
 <Base
   title="Transylvania Fly Fishing: guided fly fishing in the Apuseni Mountains and Bucovina, Romania"
-  description="Guided fly fishing for wild brown trout and grayling on the rivers of the Apuseni Mountains and Bucovina, two hours from Cluj-Napoca airport. Catch and release, season 1 April to 30 September."
+  description="Guided fly fishing for wild brown trout and grayling on the rivers of the Apuseni Mountains, two hours from Cluj-Napoca airport, and in Bucovina. Catch and release, season 1 April to 30 September."
   current="/"
   hero
 >
@@ -20,9 +21,9 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
     <Photo class="hero-photo" src="river4" sizes="100vw" eager />
     <div class="hero-shade"></div>
     <div class="wrap hero-body">
-      <div class="hero-eyebrow">Wild trout and grayling · Romanian Carpathians</div>
-      <h1>Wild water, two hours from Cluj airport.</h1>
-      <p class="hero-lead">Guided fly fishing on the rivers of the Apuseni Mountains and of Bucovina, with a guide who has fished them all his life. Catch and release, wild fish only.</p>
+      <div class="hero-eyebrow">Wild trout and grayling · Apuseni and Bucovina</div>
+      <h1>Wild waters in the Romanian Carpathians.</h1>
+      <p class="hero-lead">Guided fly fishing on the rivers of the Apuseni Mountains, two hours from Cluj airport, and of Bucovina in the north, with a guide who has fished them all his life. Catch and release, wild fish only.</p>
       <div class="hero-actions">
         <a href={url('/book/')} class="btn btn-light">Book your trip</a>
         <a href={url('/rivers/')} class="btn btn-ghost">See the rivers</a>
@@ -96,54 +97,39 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   </section>
 
   <section class="wrap section">
-    <div class="grid-2">
+    <div class="intro water-head">
       <div class="stack">
         <div class="eyebrow">The water</div>
         <h2 class="h-big">Two regions, one guide.</h2>
-        <p class="lead">The Apuseni Mountains hold several trout and grayling rivers within an hour of each other: the Someșul Cald and its Doda Pilii headwaters, the Someșul Rece, the Criș valleys and the Beliș-Fântânele lake. Bucovina, in the northeast, adds the Bistrița Aurie and the Moldova valley for longer trips.</p>
-        <div class="rivers">
+      </div>
+      <p class="lead">The Apuseni Mountains hold several trout and grayling rivers within an hour of each other: the Someșul Cald and its Doda Pilii headwaters, the Someșul Rece, the Criș valleys and the Beliș-Fântânele lake. Bucovina, in the northeast, adds the Bistrița Aurie and the Moldova valley for longer trips.</p>
+    </div>
+    <div class="regions">
+      <article class="card region-card">
+        <RegionMap region="apuseni" />
+        <div class="card-body">
           <div class="rivers-head">Apuseni</div>
-          <div class="rivers-head">Bucovina · Moldova</div>
-          <div>Someșul Cald</div><div>Bistrița Aurie</div>
-          <div>Doda Pilii headwaters</div><div>Moldova</div>
-          <div>Someșul Rece</div><div></div>
-          <div>The Criș rivers</div><div></div>
-          <div>Beliș-Fântânele lake</div><div></div>
+          <ul class="river-list">
+            <li>Someșul Cald</li>
+            <li>Doda Pilii headwaters</li>
+            <li>Someșul Rece</li>
+            <li>The Criș rivers</li>
+            <li>Beliș-Fântânele lake</li>
+          </ul>
+          <a href={url('/rivers/#apuseni')} class="link" aria-label="Apuseni: river by river, on the map">River by river, on the map →</a>
         </div>
-        <a href={url('/rivers/')} class="link">River by river, on the map →</a>
-      </div>
-      <div class="map-card">
-        <svg viewBox="0 0 600 440" role="img" aria-label="Schematic map of the two guiding regions in Romania">
-          <path d="M60 150 C90 100 150 70 220 60 C300 48 360 70 420 60 C470 52 520 80 560 120 C580 160 570 220 540 260 C520 300 480 330 430 350 C380 372 320 380 260 372 C200 364 140 340 100 300 C60 260 40 200 60 150 Z" fill="none" stroke="#4A535C" stroke-width="1.5" stroke-dasharray="4 5"></path>
-          <g class="rivers-line" fill="none" stroke="#4FB08A" stroke-linecap="round" stroke-linejoin="round">
-            <path pathLength="1" d="M150 212 C170 200 190 196 205 190 C225 182 240 176 255 178" stroke-width="4"></path>
-            <path pathLength="1" d="M150 212 C140 222 128 226 118 236" stroke-width="2"></path>
-            <path pathLength="1" d="M205 190 C200 176 196 164 194 150" stroke-width="2"></path>
-            <path pathLength="1" d="M430 118 C445 132 452 150 462 166 C470 180 480 192 486 206" stroke-width="3.5"></path>
-            <path pathLength="1" d="M400 150 C420 160 440 176 458 190" stroke-width="2.5"></path>
-            <path pathLength="1" d="M486 206 C500 214 516 218 530 226" stroke-width="2"></path>
-          </g>
-          <g class="flow" fill="none" stroke="#E4F7EE" stroke-width="1.3" stroke-linecap="round">
-            <path d="M150 212 C170 200 190 196 205 190 C225 182 240 176 255 178"></path>
-            <path d="M150 212 C140 222 128 226 118 236"></path>
-            <path d="M205 190 C200 176 196 164 194 150"></path>
-            <path d="M430 118 C445 132 452 150 462 166 C470 180 480 192 486 206"></path>
-            <path d="M400 150 C420 160 440 176 458 190"></path>
-            <path d="M486 206 C500 214 516 218 530 226"></path>
-          </g>
-          <ellipse cx="262" cy="182" rx="14" ry="6" fill="#4FB08A" opacity=".55"></ellipse>
-          <circle class="pulse" cx="300" cy="230" r="4" fill="none" stroke="#F5F2EC" stroke-width="1"></circle>
-          <g fill="#F5F2EC"><circle cx="300" cy="230" r="4"></circle><circle cx="150" cy="212" r="3.5"></circle><circle cx="430" cy="118" r="3.5"></circle></g>
-          <g font-family="Instrument Sans, Helvetica, sans-serif" font-size="12" fill="#B5BEC7">
-            <text x="310" y="234">Cluj-Napoca</text><text x="120" y="256">Doda Pilii</text><text x="438" y="112">Câmpulung Moldovenesc</text><text x="270" y="200">Beliș lake</text>
-          </g>
-          <g font-family="Cormorant Garamond, Georgia, serif" font-size="16" font-style="italic" fill="#F5F2EC">
-            <text x="176" y="176">Someșul Cald</text><text x="470" y="176">Bistrița Aurie</text><text x="392" y="146">Moldova</text>
-          </g>
-          <g font-family="Instrument Sans, Helvetica, sans-serif" font-size="11" letter-spacing="1.5" fill="#7A828B"><text x="120" y="290">APUSENI</text><text x="470" y="240">BUCOVINA</text></g>
-          <text x="20" y="428" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#7A828B" letter-spacing="1">SCHEMATIC · NOT TO SCALE</text>
-        </svg>
-      </div>
+      </article>
+      <article class="card region-card">
+        <RegionMap region="bucovina" />
+        <div class="card-body">
+          <div class="rivers-head">Bucovina · Moldova</div>
+          <ul class="river-list">
+            <li>Bistrița Aurie</li>
+            <li>Moldova</li>
+          </ul>
+          <a href={url('/rivers/#bucovina')} class="link" aria-label="Bucovina: river by river, on the map">River by river, on the map →</a>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -224,21 +210,17 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   .stack { display: flex; flex-direction: column; gap: 20px; }
   .h-big { font-size: clamp(36px, 4.5vw, 60px); line-height: 1.02; letter-spacing: -.01em; }
   .bio { font-size: 16px; line-height: 1.7; color: var(--ink-2); }
-  .rivers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; margin-top: 8px; font-size: 14px; }
-  .rivers > div { padding: 6px 0; border-bottom: 1px solid var(--line); }
-  .rivers-head { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); border-bottom: 0 !important; }
-  .map-card { background: var(--dark); border-radius: var(--radius); padding: clamp(16px, 3vw, 32px); box-shadow: var(--shadow); }
-  /* Rivers draw themselves in when the map scrolls into view, then water keeps moving along them. */
-  .map-card[data-reveal] .rivers-line path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s var(--ease) .35s; }
-  .map-card[data-reveal].is-in .rivers-line path { stroke-dashoffset: 0; }
-  .flow path { stroke-dasharray: 2 17; opacity: .85; animation: flow 2.6s linear infinite; }
-  @keyframes flow { to { stroke-dashoffset: -19; } }
-  .pulse { transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-out infinite; }
-  @keyframes pulse { from { transform: scale(1); opacity: .9; } to { transform: scale(4.5); opacity: 0; } }
+  .water-head { margin-bottom: clamp(28px, 4vw, 48px); }
+  /* One card per region, side by side: each has its own map and its own list of waters. */
+  .regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; align-items: stretch; }
+  .region-card :global(.region-map) { border-radius: 0; }
+  .rivers-head { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .river-list { list-style: none; margin: 4px 0 8px; padding: 0; flex: 1; font-size: 15px; }
+  .river-list li { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .river-list li:last-child { border-bottom: 0; }
 
   .portrait { position: relative; isolation: isolate; }
   .portrait::before { content: ''; position: absolute; inset: 14px -14px -14px 14px; border: 1px solid var(--accent); border-radius: var(--radius); opacity: .55; z-index: -1; }
-  .map-card svg { width: 100%; height: auto; display: block; }
 
   .cta { position: relative; overflow: hidden; margin-top: var(--section); background-color: var(--dark); color: var(--on-dark); }
   .cta-body { position: relative; }
