@@ -3,11 +3,11 @@ import { glob } from 'astro/loaders';
 
 const trips = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/trips' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     date: z.coerce.date(),
     river: z.enum(['Someșul Cald', 'Doda Pilii', 'Apuseni', 'Bucovina', 'Courses', 'Veterans', 'Other']),
-    photos: z.array(z.string()).default([]),
+    photos: z.array(image()).default([]),
     facebook: z.string().url().optional(),
     caught: z.string().optional(),
     flies: z.string().optional(),

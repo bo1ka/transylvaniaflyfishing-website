@@ -18,9 +18,10 @@ Open http://localhost:4321.
 - `src/pages/` one file per URL. `index.astro` is the home page.
 - `src/layouts/Base.astro` the shared shell: head, nav, footer.
 - `src/styles/global.css` colours, type and the few shared classes.
-- `src/content/trips/` one markdown file per guided trip; Sebi creates these through the CMS.
+- `src/assets/` site photos and partner logos; Astro resizes and converts them at build time.
+- `src/content/trips/` one markdown file per guided trip, with its photos next to it; Sebi creates these through the CMS.
 - `src/content.config.ts` the schema those files must follow.
-- `public/` files copied as they are: photos, favicons, robots.txt.
+- `public/` files copied as they are: favicons, robots.txt.
 
 ## Deploy
 

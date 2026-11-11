@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { url } from '../lib/url';
-import { site, photo, tel } from '../data/site';
+import { site, tel } from '../data/site';
 import SocialLinks from '../components/SocialLinks.astro';
 ---
 <Base title="Contact · Transylvania Fly Fishing" description="How to reach Transylvania Fly Fishing: email, phone, WhatsApp and social media, plus how to get to the Apuseni Mountains from Cluj-Napoca airport." current="/contact/">
@@ -30,7 +31,7 @@ import SocialLinks from '../components/SocialLinks.astro';
         <p>If you prefer to travel by car, we send you complete itinerary information one week before your arrival.</p>
       </div>
     </div>
-    <div class="frame ratio-219"><img class="photo" src={photo('river1')} alt="" loading="lazy" /></div>
+    <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="river1" alt="" /></div>
   </div>
 </Base>
 

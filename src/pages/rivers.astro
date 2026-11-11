@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { url } from '../lib/url';
-import { site, photo } from '../data/site';
+import { site } from '../data/site';
 
 const apuseni = [
   {
@@ -56,7 +57,7 @@ const bucovina = [
   </section>
 
   <div class="wrap page-body">
-    <div class="frame ratio-219"><img class="photo" src={photo('river4')} alt="Apuseni river gorge" loading="lazy" /></div>
+    <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="river4" alt="Apuseni river gorge" /></div>
 
     <div class="prose">
       <h2>Apuseni</h2>
@@ -65,7 +66,7 @@ const bucovina = [
     <div class="grid-3">
       {apuseni.map((r) => (
         <article class="card">
-          <div class="frame ratio-32"><img class="photo" src={photo(r.photo)} alt={r.name} loading="lazy" /></div>
+          <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
           <div class="card-body">
             <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
             <p>{r.text}</p>
@@ -82,7 +83,7 @@ const bucovina = [
     <div class="grid-3">
       {bucovina.map((r) => (
         <article class="card">
-          <div class="frame ratio-32"><img class="photo" src={photo(r.photo)} alt={r.name} loading="lazy" /></div>
+          <div class="frame ratio-32"><Photo class="photo" src={r.photo} alt={r.name} /></div>
           <div class="card-body">
             <div class="row"><h3>{r.name}</h3><span class="tag">{r.tag}</span></div>
             <p>{r.text}</p>
@@ -98,7 +99,7 @@ const bucovina = [
     </div>
     <div class="grid-3">
       <article class="card">
-        <div class="frame ratio-32"><img class="photo" src={photo('landscape2')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-32"><Photo class="photo" src="landscape2" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Spectacular nature</div>
           <h3>Apuseni Nature Park</h3>
@@ -106,7 +107,7 @@ const bucovina = [
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-32"><img class="photo" src={photo('cluj')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-32"><Photo class="photo" src="cluj" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Well preserved history</div>
           <h3>Cluj-Napoca</h3>
@@ -114,7 +115,7 @@ const bucovina = [
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-32"><img class="photo" src={photo('salina_turda')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-32"><Photo class="photo" src="salina_turda" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Unbelievable places</div>
           <h3>Turda Salt Mine</h3>

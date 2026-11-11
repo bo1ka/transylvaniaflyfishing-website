@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { url } from '../lib/url';
-import { site, photo } from '../data/site';
+import { site } from '../data/site';
 
 const dryFlies = [
   'CDC gray, black, brown, orange, chartreuse, size 14 to 22',
@@ -42,11 +43,11 @@ const nymphs = [
   </section>
 
   <div class="wrap page-body">
-    <div class="frame ratio-219"><img class="photo" src={photo('guide18')} alt="Guiding in the Apuseni Mountains" loading="lazy" /></div>
+    <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="guide18" alt="Guiding in the Apuseni Mountains" /></div>
 
     <div class="grid-3">
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('catch12')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="catch12" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">River guiding</div>
           <h3>Your partner on the water</h3>
@@ -54,7 +55,7 @@ const nymphs = [
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('cluj')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="cluj" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Sightseeing tours</div>
           <h3>Cluj-Napoca and beyond</h3>
@@ -62,7 +63,7 @@ const nymphs = [
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('guide12')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="guide12" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">New generations</div>
           <h3>Courses for children and beginners</h3>

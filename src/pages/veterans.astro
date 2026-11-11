@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { url } from '../lib/url';
-import { photo } from '../data/site';
 ---
 <Base title="Veterans program · Transylvania Fly Fishing" description="A fly fishing program for military personnel, veterans, disabled veterans and their families, run by an Army veteran in the Romanian Carpathians. The first of its kind in Romania." current="/veterans/">
   <section class="wrap page-head">
@@ -13,7 +13,7 @@ import { photo } from '../data/site';
   </section>
 
   <div class="wrap page-body">
-    <div class="frame ratio-219"><img class="photo" src={photo('river12')} alt="" loading="lazy" /></div>
+    <div class="frame ratio-219"><Photo class="photo" sizes="100vw" src="river12" alt="" /></div>
 
     <div class="grid-2 top">
       <div class="prose">

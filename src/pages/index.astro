@@ -1,8 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { getCollection } from 'astro:content';
 import { url } from '../lib/url';
-import { site, photo } from '../data/site';
+import { site } from '../data/site';
 
 const trips = (await getCollection('trips'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -15,7 +16,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   current="/"
 >
   <section class="hero">
-    <img class="hero-photo" src={photo('river4')} alt="" />
+    <Photo class="hero-photo" src="river4" sizes="100vw" eager />
     <div class="hero-shade"></div>
     <div class="wrap hero-body">
       <div class="hero-eyebrow">Wild trout and grayling · Romanian Carpathians</div>
@@ -35,7 +36,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
     </div>
     <div class="grid-3">
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('catch12')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="catch12" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Guided days</div>
           <h3>A day on the river</h3>
@@ -44,7 +45,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('river1')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="river1" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">All-inclusive stays</div>
           <h3>Two days minimum, everything sorted</h3>
@@ -53,7 +54,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         </div>
       </article>
       <article class="card">
-        <div class="frame ratio-43"><img class="photo" src={photo('guide12')} alt="" loading="lazy" /></div>
+        <div class="frame ratio-43"><Photo class="photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" src="guide12" alt="" /></div>
         <div class="card-body">
           <div class="eyebrow">Veterans program</div>
           <h3>For those who serve and served</h3>
@@ -76,7 +77,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       {trips.map((t) => (
         <article class="card">
           {t.data.photos[0]
-            ? <img src={url(t.data.photos[0])} alt="" class="trip-photo" loading="lazy" />
+            ? <Photo src={t.data.photos[0]} class="trip-photo" sizes="(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw" />
             : <div class="ph ratio-32" data-caption="photo"></div>}
           <div class="card-body trip-body">
             <div class="trip-meta"><span>{fmt.format(t.data.date)}</span><span>{t.data.river}</span></div>
@@ -134,7 +135,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 
   <section class="wrap section">
     <div class="grid-2">
-      <div class="frame ratio-45"><img class="photo" src={photo('guide18')} alt="Sebastian Budeanu" loading="lazy" /></div>
+      <div class="frame ratio-45"><Photo class="photo" src="guide18" alt="Sebastian Budeanu" /></div>
       <div class="stack">
         <div class="eyebrow">Your guide</div>
         <h2 class="h-big">Sebastian Budeanu. Sebi, on the river.</h2>
@@ -174,7 +175,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
   .intro .lead { max-width: 46ch; }
 
 
-  .trip-photo { aspect-ratio: 3 / 2; width: 100%; object-fit: cover; display: block; }
+  .trip-photo { aspect-ratio: 3 / 2; width: 100%; height: auto; object-fit: cover; display: block; }
   .trip-body { padding: 20px 22px 24px; gap: 8px; }
   .trip-meta { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
   .trip-title { font-size: 26px; }

@@ -21,9 +21,4 @@ export const site = {
   ],
 };
 
-const oldSite = 'https://www.transylvaniaflyfishing.com/esm-bundled/images';
-
-export const photo = (name: string) => `${oldSite}/jpeg.x1920/${name}.jpg`;
-export const logo = (name: string) => `${oldSite}/logos/${name}.png`;
-
 export const tel = (p: string) => `tel:${p.replace(/\s+/g, '')}`;
