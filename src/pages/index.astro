@@ -76,7 +76,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       {trips.map((t) => (
         <article class="card">
           {t.data.photos[0]
-            ? <img src={t.data.photos[0]} alt="" class="trip-photo" loading="lazy" />
+            ? <img src={url(t.data.photos[0])} alt="" class="trip-photo" loading="lazy" />
             : <div class="ph ratio-32" data-caption="photo"></div>}
           <div class="card-body trip-body">
             <div class="trip-meta"><span>{fmt.format(t.data.date)}</span><span>{t.data.river}</span></div>
