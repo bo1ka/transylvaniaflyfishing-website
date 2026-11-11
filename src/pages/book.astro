@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site, tel } from '../data/site';
+import { site } from '../data/site';
+
+const whatsapp = `https://wa.me/${site.whatsapp.replace('+', '')}`;
 ---
 <Base title="Book your trip · Transylvania Fly Fishing" description="Send a booking request with your dates, group size and trip type. Sebi replies personally with availability, a plan and the price." current="/book/">
   <div class="wrap layout">
@@ -19,16 +21,18 @@ import { site, tel } from '../data/site';
       </ol>
       <div class="facts">
         <span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a>
-        <span>WhatsApp</span><a href={tel(site.phones[0])}>{site.phones[0]}</a>
+        <span>WhatsApp</span><a href={whatsapp} rel="noopener">{site.phones[0]}</a>
         <span>Getting here</span><span>Fly to Cluj-Napoca (CLJ); about 2 h by car to the river, pickup on request</span>
       </div>
     </div>
 
-    <form class="panel form" id="booking" data-to={site.email}>
+    <form class="panel form" id="booking" data-to={site.email} data-whatsapp={whatsapp}>
       <div class="form-row">
         <label class="field">First day<input type="date" name="from" required /></label>
         <label class="field">Last day<input type="date" name="to" required /></label>
       </div>
+      <p class="error" id="date-error" role="alert" hidden></p>
+      <p class="notice" id="season-note" role="status" hidden>These dates are outside the fishing season ({site.season}). You can still send the request, and Sebi will tell you what is possible.</p>
       <label class="field">Trip type
         <select name="type">
           <option>All-inclusive stay (lodging, meals, licences, guiding)</option>
@@ -48,18 +52,83 @@ import { site, tel } from '../data/site';
       <label class="field">Anything else<textarea name="message" rows="4" placeholder="Experience, equipment you need, airport pickup, non-fishing companions"></textarea></label>
       <button type="submit" class="btn btn-accent">Send booking request</button>
       <p class="fine">Opens your email app with the request filled in, addressed to {site.email}. No payment is taken on this site.</p>
+
+      <div class="sent tint" id="sent" tabindex="-1" hidden>
+        <strong>Your request is ready to send.</strong>
+        <p>If your email app did not open, send it one of these ways instead:</p>
+        <div class="sent-actions">
+          <a class="btn btn-accent btn-sm" id="send-whatsapp" rel="noopener" target="_blank">Send on WhatsApp</a>
+          <a class="btn btn-sm btn-outline" id="send-email">Open email app again</a>
+          <button type="button" class="btn btn-sm btn-outline" id="copy">Copy the message</button>
+        </div>
+        <p class="fine">Or copy it and email it to <a href={`mailto:${site.email}`}>{site.email}</a> from your webmail.</p>
+        <textarea id="summary" rows="9" readonly aria-label="Your booking request"></textarea>
+      </div>
     </form>
   </div>
 </Base>
 
 <script>
   const form = document.getElementById('booking') as HTMLFormElement;
-  const to = form.dataset.to ?? '';
+  const from = form.elements.namedItem('from') as HTMLInputElement;
+  const to = form.elements.namedItem('to') as HTMLInputElement;
+  const dateError = document.getElementById('date-error') as HTMLElement;
+  const seasonNote = document.getElementById('season-note') as HTMLElement;
+  const sent = document.getElementById('sent') as HTMLElement;
+  const summary = document.getElementById('summary') as HTMLTextAreaElement;
+  const emailLink = document.getElementById('send-email') as HTMLAnchorElement;
+  const whatsappLink = document.getElementById('send-whatsapp') as HTMLAnchorElement;
+  const copy = document.getElementById('copy') as HTMLButtonElement;
+
+  // Dates: nothing in the past, and the last day cannot be before the first.
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const now = new Date();
+  from.min = to.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  from.addEventListener('change', () => {
+    if (from.value) to.min = from.value;
+    checkDates();
+  });
+  to.addEventListener('change', checkDates);
+
+  // Date inputs give yyyy-mm-dd; read the parts directly so time zones cannot shift the day.
+  const parts = (iso: string) => iso.split('-').map(Number);
+  const longDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const pretty = (iso: string) => {
+    const [y, m, d] = parts(iso);
+    return longDate.format(new Date(y, m - 1, d));
+  };
+
+  // Season is 1 April to 30 September. Outside it we warn but still let the request through.
+  const inSeason = (iso: string) => {
+    const month = parts(iso)[1];
+    return month >= 4 && month <= 9;
+  };
+  function outOfSeason() {
+    if (from.value && !inSeason(from.value)) return true;
+    if (to.value && !inSeason(to.value)) return true;
+    // Both ends in season but in different years: the stay runs through a winter.
+    return Boolean(from.value && to.value && parts(from.value)[0] !== parts(to.value)[0]);
+  }
+
+  function checkDates() {
+    const bad = Boolean(from.value && to.value && to.value < from.value);
+    dateError.textContent = bad ? 'The last day is before the first day.' : '';
+    dateError.hidden = !bad;
+    seasonNote.hidden = bad || !outOfSeason();
+    return !bad;
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (!checkDates()) {
+      to.focus();
+      return;
+    }
     const d = new FormData(form);
-    const lines = [
-      `Dates: ${d.get('from')} to ${d.get('to')}`,
+    const dates = `${pretty(from.value)} to ${pretty(to.value)}`;
+    const subject = `Booking request: ${d.get('anglers')} anglers, ${dates}`;
+    const body = [
+      `Dates: ${dates}${outOfSeason() ? ' (outside the season)' : ''}`,
       `Trip type: ${d.get('type')}`,
       `Anglers: ${d.get('anglers')}`,
       `Region: ${d.get('region')}`,
@@ -67,9 +136,29 @@ import { site, tel } from '../data/site';
       `Email: ${d.get('email')}`,
       '',
       String(d.get('message') ?? ''),
-    ];
-    const subject = `Booking request: ${d.get('anglers')} anglers, ${d.get('from')} to ${d.get('to')}`;
-    location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+    ].join('\n').trim();
+
+    const mailto = `mailto:${form.dataset.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    emailLink.href = mailto;
+    whatsappLink.href = `${form.dataset.whatsapp}?text=${encodeURIComponent(`${subject}\n\n${body}`)}`;
+    summary.value = `${subject}\n\n${body}`;
+    copy.textContent = 'Copy the message';
+
+    // A browser cannot tell whether a mail app opened, so always show the other ways to send.
+    sent.hidden = false;
+    sent.focus();
+    sent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    location.href = mailto;
+  });
+
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(summary.value);
+    } catch {
+      summary.select();
+      document.execCommand('copy');
+    }
+    copy.textContent = 'Copied';
   });
 </script>
 
@@ -86,4 +175,15 @@ import { site, tel } from '../data/site';
   .form { display: flex; flex-direction: column; gap: 16px; }
   .form .btn { align-self: flex-start; }
   .fine { font-size: 12px; line-height: 1.5; color: var(--muted); }
+  .error { margin: -6px 0 0; font-size: 13px; color: #A3341F; }
+  .notice { margin: -6px 0 0; padding: 10px 14px; border-radius: 4px; background: #FBF1DC; color: #6B4A0E; font-size: 13px; line-height: 1.5; }
+  .sent { display: flex; flex-direction: column; gap: 12px; font-size: 14px; line-height: 1.5; }
+  .sent[hidden] { display: none; }
+  .sent:focus { outline: none; }
+  .sent p { margin: 0; }
+  .sent-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sent .btn { align-self: auto; }
+  .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); cursor: pointer; }
+  .btn-outline:hover { background: var(--accent); color: #fff; }
+  .sent textarea { width: 100%; padding: 12px 14px; border: 1px solid #D6CFC4; border-radius: 4px; background: #FBFAF7; font: 13px/1.5 ui-monospace, Menlo, monospace; resize: vertical; }
 </style>
