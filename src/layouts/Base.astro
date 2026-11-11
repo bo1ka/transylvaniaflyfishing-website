@@ -10,9 +10,11 @@ interface Props {
   title: string;
   description: string;
   current?: string;
+  /** Page opens with a full-bleed dark hero: the header sits on top of it until the reader scrolls. */
+  hero?: boolean;
 }
 
-const { title, description, current = '' } = Astro.props;
+const { title, description, current = '', hero = false } = Astro.props;
 const nav = [
   ['/', 'Home'],
   ['/guiding/', 'Guiding'],
@@ -41,8 +43,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" />
   </head>
-  <body>
-    <header class="site-header">
+  <body class:list={[{ 'has-hero': hero }]}>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="site-header" id="site-header">
       <div class="wrap bar">
         <a href={url('/')} class="brand">
           <span class="brand-name">Transylvania Fly Fishing</span>
@@ -64,6 +67,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </main>
 
     <footer class="site-footer">
+      <div class="wrap"><div class="wave-rule foot-rule"></div></div>
       <div class="wrap foot">
         <div class="foot-col">
           <span class="foot-brand">Transylvania Fly Fishing</span>
@@ -89,17 +93,59 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </body>
 </html>
 
+<script>
+  // Header: solid once the reader has scrolled past the top of the page.
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Scroll reveal: mark the outermost blocks of each page, then fade them in as they enter the viewport.
+  const selector = '.page-head > *, .section-head, .intro > *, .card, .frame, .prose, .panel, .tint, .trip, .grid-2 > *, .cta-body > *, .layout > *, .foot-col';
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!still && 'IntersectionObserver' in window) {
+    const blocks = [...document.querySelectorAll<HTMLElement>(selector)].filter(
+      (el) => !el.parentElement?.closest('[data-reveal]') && !el.closest('.hero'),
+    );
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          seen.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+    for (const el of blocks) {
+      // Stagger siblings that sit side by side (cards in a grid), up to four steps.
+      const siblings = [...(el.parentElement?.children ?? [])].filter((c) => c.matches(selector));
+      el.style.setProperty('--i', String(Math.min(Math.max(siblings.indexOf(el), 0), 4)));
+      el.setAttribute('data-reveal', '');
+      seen.observe(el);
+    }
+  }
+</script>
+
 <style>
-  .site-header { position: sticky; top: 0; z-index: 20; background: rgba(245, 242, 236, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .bar { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  .brand { display: flex; align-items: baseline; gap: 10px; color: var(--ink); }
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 30; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+  @supports (animation-timeline: scroll()) {
+    .progress { animation: progress linear both; animation-timeline: scroll(root); }
+    @keyframes progress { to { transform: scaleX(1); } }
+  }
+  .site-header { position: sticky; top: 0; z-index: 20; background: rgba(245, 242, 236, .88); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid var(--line); transition: background-color .4s, border-color .4s, box-shadow .4s; }
+  .site-header.scrolled { box-shadow: 0 10px 30px -22px rgba(28, 42, 38, .5); }
+  .bar { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .menu-toggle { flex: 0 0 auto; }
+  .brand { display: flex; align-items: baseline; gap: 10px; color: var(--ink); transition: color .4s; }
   .brand:hover { text-decoration: none; }
-  .brand-name { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+  .brand-name { font-family: var(--serif); font-size: clamp(20px, 5.6vw, 26px); font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
   .brand-sub { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .nav { display: flex; gap: 26px; align-items: center; }
-  .nav-link { font-size: 14px; letter-spacing: .02em; color: var(--ink); padding: 6px 0; border-bottom: 2px solid transparent; }
+  .nav-link { position: relative; font-size: 14px; letter-spacing: .02em; color: var(--ink); padding: 6px 0; transition: color .3s; }
+  .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform .35s var(--ease); }
   .nav-link:hover { color: var(--accent); text-decoration: none; }
-  .nav-link.active { border-bottom-color: var(--accent); }
+  .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
   .menu-toggle { display: none; }
 
   @media (max-width: 1080px) {
@@ -108,11 +154,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     .nav { display: none; position: absolute; left: 0; right: 0; top: 68px; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 12px var(--pad-x) 20px; }
     #menu:checked ~ .nav { display: flex; }
     .nav-link { font-family: var(--serif); font-size: 26px; padding: 14px 0; border-bottom: 1px solid var(--line-3); }
-    .nav-link.active { border-bottom-color: var(--line-3); color: var(--accent); }
+    .nav-link.active { color: var(--accent); }
+    .nav-link::after { display: none; }
     .nav .btn { margin-top: 16px; }
   }
 
-  .site-footer { margin-top: var(--section); border-top: 1px solid var(--line); background: var(--bg-2); }
+  /* Pages with a full-bleed hero: the header floats over the photo until the reader scrolls. */
+  :global(body.has-hero) .site-header { position: fixed; left: 0; right: 0; }
+  :global(body.has-hero) .site-header:not(.scrolled) { background: linear-gradient(180deg, rgba(14, 22, 19, .72), rgba(14, 22, 19, 0)); border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  :global(body.has-hero) .site-header:not(.scrolled) .brand,
+  :global(body.has-hero) .site-header:not(.scrolled) .menu-toggle { color: var(--on-dark); border-color: rgba(245, 242, 236, .5); }
+  :global(body.has-hero) .site-header:not(.scrolled) .brand-sub { color: rgba(245, 242, 236, .75); }
+  @media (min-width: 1081px) {
+    :global(body.has-hero) .site-header:not(.scrolled) .nav-link { color: var(--on-dark); }
+    :global(body.has-hero) .site-header:not(.scrolled) .nav-link::after { background: var(--on-dark); }
+  }
+  /* An open mobile menu always sits on a solid bar. */
+  :global(body.has-hero) .site-header:has(#menu:checked) { background: var(--bg); }
+  :global(body.has-hero) .site-header:has(#menu:checked) .brand,
+  :global(body.has-hero) .site-header:has(#menu:checked) .menu-toggle { color: var(--ink); border-color: #CFC8BC; }
+
+  .site-footer { margin-top: var(--section); background: var(--bg-2); }
+  .foot-rule { margin-top: -6px; }
   .foot { padding-top: 40px; padding-bottom: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 28px; font-size: 13px; color: var(--ink-2); line-height: 1.6; }
   .foot-col { display: flex; flex-direction: column; gap: 6px; }
   .foot-brand { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink); }
@@ -120,5 +183,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   .foot a:hover { color: var(--accent); }
   .foot-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .partners { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .partners img { height: 36px; width: auto; display: block; }
+  .partners img { height: 36px; width: auto; display: block; filter: grayscale(1); opacity: .7; transition: filter .3s, opacity .3s; }
+  .partners a:hover img { filter: none; opacity: 1; }
 </style>
