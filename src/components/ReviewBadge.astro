@@ -1,0 +1,118 @@
+---
+/**
+ * Floating Google rating badge, shown on every page once the reader has scrolled a little.
+ * It opens into a small card with the latest review: open by default on wide screens, closed on phones.
+ */
+import { siGoogle } from 'simple-icons';
+import { google } from '../data/reviews';
+import Stars from './Stars.astro';
+
+const latest = google.reviews[0];
+---
+<aside class="review-badge" id="review-badge" aria-label="Google rating and latest review" hidden>
+  <div class="latest" id="review-panel">
+    <div class="latest-inner">
+      <div class="latest-head"><span>Latest review</span><span>{latest.when}</span></div>
+      <blockquote>“{latest.short}”</blockquote>
+      <div class="who"><Stars rating={5} size={14} /><strong>{latest.name}</strong></div>
+      <a class="all" href={google.url} rel="noopener" target="_blank">Read all {google.count} reviews on Google →</a>
+    </div>
+  </div>
+  <div class="bar">
+    <button type="button" class="toggle" id="review-toggle" aria-expanded="false" aria-controls="review-panel">
+      <svg class="g" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={siGoogle.path}></path></svg>
+      <span class="num">{google.rating.toFixed(1)}</span>
+      <Stars rating={google.rating} size={19} />
+      <span class="label">on Google</span>
+      <svg class="chev" viewBox="0 0 14 9" width="12" height="8" aria-hidden="true"><path d="M1.5 7.5 7 2l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <button type="button" class="close" id="review-close" aria-label="Close">×</button>
+  </div>
+</aside>
+
+<script>
+  const badge = document.getElementById('review-badge');
+  const toggle = document.getElementById('review-toggle');
+  const close = document.getElementById('review-close');
+  const KEY = 'review-badge';
+  const recall = () => { try { return sessionStorage.getItem(KEY); } catch { return null; } };
+  const remember = (v: string) => { try { sessionStorage.setItem(KEY, v); } catch {} };
+
+  if (badge && toggle && close) {
+    const setOpen = (open: boolean) => {
+      badge.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      close.setAttribute('aria-label', open ? 'Close the latest review' : 'Hide the Google rating on this page');
+    };
+    // Wide screens start with the latest review showing; phones start with just the rating.
+    const saved = recall();
+    setOpen(saved === 'open' || saved === 'closed' ? saved === 'open' : window.matchMedia('(min-width: 900px)').matches);
+    badge.hidden = false;
+
+    // Slide in after the first screen, so it never sits over the hero buttons on arrival.
+    const update = () => badge.classList.toggle('show', window.scrollY > 320);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+
+    toggle.addEventListener('click', () => {
+      const open = !badge.classList.contains('open');
+      setOpen(open);
+      remember(open ? 'open' : 'closed');
+    });
+    // The × first folds the card back to the rating; pressed again, it hides the badge on this page only.
+    // Nothing permanent is stored for that, so the badge is back on the next page or after a reload.
+    close.addEventListener('click', () => {
+      if (badge.classList.contains('open')) {
+        setOpen(false);
+        remember('closed');
+      } else {
+        badge.hidden = true;
+      }
+    });
+  }
+</script>
+
+<style>
+  .review-badge { position: fixed; left: clamp(12px, 2vw, 28px); bottom: clamp(12px, 2vw, 28px); z-index: 25; width: max-content; max-width: calc(100vw - 24px); background: var(--dark); color: var(--on-dark); border: 1px solid rgba(245, 242, 236, .14); border-radius: var(--radius); box-shadow: 0 4px 10px rgba(12, 20, 17, .25), 0 24px 50px -14px rgba(12, 20, 17, .6); opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity .5s var(--ease), transform .5s var(--ease); }
+  .review-badge[hidden] { display: none; }
+  .review-badge.show { opacity: 1; transform: none; pointer-events: auto; }
+  /* A soft gold ring pulses a few times when the badge first appears, then stops. */
+  .review-badge.show::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; border: 2px solid #E3A33A; opacity: 0; pointer-events: none; animation: badge-ring 1.8s ease-out .5s 3; }
+  @keyframes badge-ring { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08, 1.2); } }
+
+  /* The latest review folds open above the rating bar. */
+  /* The card takes its width from the rating bar, so the review text wraps to it and the bar never gets squeezed. */
+  .latest { display: none; width: 0; min-width: 100%; }
+  .open .latest { display: block; animation: latest-in .45s var(--ease); }
+  @keyframes latest-in { from { opacity: 0; transform: translateY(8px); } }
+  .latest-head { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px 0; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--on-dark-2); }
+  .latest-head span:first-child { color: #F3C063; }
+  blockquote { margin: 0; padding: 10px 18px 0; font-family: var(--serif); font-size: 19px; line-height: 1.35; color: var(--on-dark); }
+  .who { display: flex; align-items: center; gap: 10px; padding: 12px 18px 0; font-size: 14px; }
+  .who strong { font-weight: 600; }
+  .all { display: block; margin: 14px 18px 0; padding: 12px 0 14px; border-top: 1px solid rgba(245, 242, 236, .14); font-size: 14px; font-weight: 500; color: var(--accent-on-dark); }
+  .all:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .open .bar { border-top: 1px solid rgba(245, 242, 236, .14); }
+
+  .bar { display: flex; align-items: stretch; }
+  button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+  .toggle { flex: 1 0 auto; display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 18px; font-size: 15px; font-weight: 500; text-align: left; border-radius: 0 0 0 var(--radius); }
+  .g { fill: var(--on-dark); flex: 0 0 auto; }
+  .num { font-family: var(--serif); font-size: 32px; font-weight: 600; line-height: .9; color: #F3C063; }
+  .review-badge :global(.stars svg) { fill: #F3B544; }
+  .label { white-space: nowrap; }
+  .chev { margin-left: auto; color: var(--on-dark-2); transition: transform .35s var(--ease); }
+  .open .chev { transform: rotate(180deg); }
+  .toggle:hover .chev { color: #fff; }
+  .close { flex: 0 0 auto; border-left: 1px solid rgba(245, 242, 236, .14); padding: 0 17px 2px; font-size: 22px; line-height: 1; color: var(--on-dark-2); border-radius: 0 0 var(--radius) 0; }
+  .close:hover { color: #fff; }
+  .review-badge :focus-visible { outline-color: #F3C063; outline-offset: -3px; }
+
+  @media (max-width: 480px) {
+    .toggle { gap: 9px; padding: 11px 10px 11px 14px; font-size: 14px; }
+    .close { padding: 0 14px 2px; }
+    .num { font-size: 26px; }
+    .bar :global(.stars svg) { width: 16px; height: 16px; }
+    blockquote { font-size: 17px; }
+  }
+</style>

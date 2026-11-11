@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
 import RegionMap from '../components/RegionMap.astro';
+import Reviews from '../components/Reviews.astro';
 import { getCollection } from 'astro:content';
 import { url } from '../lib/url';
 import { site } from '../data/site';
@@ -149,6 +150,8 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
       </div>
     </div>
   </section>
+
+  <Reviews />
 
   <section class="cta contours">
     <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
