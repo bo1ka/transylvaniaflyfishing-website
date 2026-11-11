@@ -135,25 +135,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   }
   .site-header { position: sticky; top: 0; z-index: 20; background: rgba(245, 242, 236, .88); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid var(--line); transition: background-color .4s, border-color .4s, box-shadow .4s; }
   .site-header.scrolled { box-shadow: 0 10px 30px -22px rgba(28, 42, 38, .5); }
-  .bar { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .bar { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .menu-toggle { flex: 0 0 auto; }
-  .brand { display: flex; align-items: baseline; gap: 10px; color: var(--ink); transition: color .4s; }
+  .brand { display: flex; flex-direction: column; gap: 5px; color: var(--ink); transition: color .4s; }
   .brand:hover { text-decoration: none; }
-  .brand-name { font-family: var(--serif); font-size: clamp(20px, 5.6vw, 26px); font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
-  .brand-sub { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-  .nav { display: flex; gap: 26px; align-items: center; }
-  .nav-link { position: relative; font-size: 14px; letter-spacing: .02em; color: var(--ink); padding: 6px 0; transition: color .3s; }
+  .brand-name { font-family: var(--serif); font-size: clamp(21px, 5.6vw, 27px); line-height: 1; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+  .brand-sub { display: flex; align-items: center; gap: 10px; font-size: clamp(10.5px, 2.9vw, 12.5px); line-height: 1; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--accent); white-space: nowrap; transition: color .4s; }
+  .brand-sub::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: .45; }
+  .nav { display: flex; gap: clamp(16px, 1.7vw, 26px); align-items: center; }
+  .nav-link { position: relative; font-size: 17px; letter-spacing: .01em; white-space: nowrap; color: var(--ink); padding: 6px 0; transition: color .3s; }
   .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform .35s var(--ease); }
   .nav-link:hover { color: var(--accent); text-decoration: none; }
   .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
   .menu-toggle { display: none; }
 
-  @media (max-width: 1080px) {
-    .brand-sub { display: none; }
-    .menu-toggle { display: inline-flex; align-items: center; border: 1px solid #CFC8BC; border-radius: 999px; padding: 10px 16px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; min-height: 44px; cursor: pointer; }
-    .nav { display: none; position: absolute; left: 0; right: 0; top: 68px; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 12px var(--pad-x) 20px; }
+  @media (max-width: 1180px) {
+    .menu-toggle { display: inline-flex; align-items: center; border: 1px solid #CFC8BC; border-radius: var(--btn-radius); padding: 10px 16px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; min-height: 44px; cursor: pointer; }
+    .nav { display: none; position: absolute; left: 0; right: 0; top: 76px; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 12px var(--pad-x) 20px; }
     #menu:checked ~ .nav { display: flex; }
-    .nav-link { font-family: var(--serif); font-size: 26px; padding: 14px 0; border-bottom: 1px solid var(--line-3); }
+    .nav-link { font-family: var(--serif); font-size: 26px; letter-spacing: .02em; padding: 14px 0; border-bottom: 1px solid var(--line-3); }
     .nav-link.active { color: var(--accent); }
     .nav-link::after { display: none; }
     .nav .btn { margin-top: 16px; }
@@ -164,8 +164,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   :global(body.has-hero) .site-header:not(.scrolled) { background: linear-gradient(180deg, rgba(14, 22, 19, .72), rgba(14, 22, 19, 0)); border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
   :global(body.has-hero) .site-header:not(.scrolled) .brand,
   :global(body.has-hero) .site-header:not(.scrolled) .menu-toggle { color: var(--on-dark); border-color: rgba(245, 242, 236, .5); }
-  :global(body.has-hero) .site-header:not(.scrolled) .brand-sub { color: rgba(245, 242, 236, .75); }
-  @media (min-width: 1081px) {
+  :global(body.has-hero) .site-header:not(.scrolled) .brand-sub { color: #A9E6C8; }
+  @media (min-width: 1181px) {
     :global(body.has-hero) .site-header:not(.scrolled) .nav-link { color: var(--on-dark); }
     :global(body.has-hero) .site-header:not(.scrolled) .nav-link::after { background: var(--on-dark); }
   }
@@ -173,6 +173,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   :global(body.has-hero) .site-header:has(#menu:checked) { background: var(--bg); }
   :global(body.has-hero) .site-header:has(#menu:checked) .brand,
   :global(body.has-hero) .site-header:has(#menu:checked) .menu-toggle { color: var(--ink); border-color: #CFC8BC; }
+  :global(body.has-hero) .site-header:has(#menu:checked) .brand-sub { color: var(--accent); }
 
   .site-footer { margin-top: var(--section); background: var(--bg-2); }
   .foot-rule { margin-top: -6px; }

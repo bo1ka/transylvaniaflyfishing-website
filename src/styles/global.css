@@ -22,11 +22,13 @@
   --section: clamp(64px, 9vw, 120px);
   --wrap: 1240px;
   --radius: 10px;
+  --btn-radius: 6px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --shadow: 0 1px 2px rgba(28, 42, 38, .04), 0 12px 32px -12px rgba(28, 42, 38, .18);
 }
 
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 html, body {
   margin: 0;
@@ -54,7 +56,7 @@ p { margin: 0; }
 .eyebrow::before { content: ''; flex: 0 0 22px; height: 1px; background: currentColor; opacity: .7; }
 .lead { font-size: 16px; line-height: 1.65; color: var(--ink-2); }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 16px 26px; font-size: 15px; font-weight: 600; min-height: 48px; border: 0; cursor: pointer; transition: transform .25s var(--ease), box-shadow .25s var(--ease), background-color .2s, border-color .2s, color .2s; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: var(--btn-radius); padding: 16px 26px; font-size: 15px; font-weight: 600; letter-spacing: .01em; min-height: 48px; border: 0; cursor: pointer; transition: transform .25s var(--ease), box-shadow .25s var(--ease), background-color .2s, border-color .2s, color .2s; }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0); }
 .btn:hover { text-decoration: none; }
@@ -64,7 +66,7 @@ p { margin: 0; }
 .btn-light:hover { background: #fff; color: var(--ink); }
 .btn-ghost { background: none; color: var(--on-dark); border: 1px solid rgba(245, 242, 236, .5); font-weight: 400; }
 .btn-ghost:hover { border-color: var(--on-dark); color: var(--on-dark); }
-.btn-sm { padding: 10px 18px; font-size: 14px; font-weight: 500; min-height: 40px; }
+.btn-sm { padding: 11px 20px; font-size: 15px; font-weight: 600; min-height: 42px; }
 
 .link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 14px; font-weight: 500; min-height: 44px; background: linear-gradient(currentColor, currentColor) 0 calc(100% - 10px) / 0 1px no-repeat; transition: background-size .35s var(--ease), color .2s; }
 .link:hover { text-decoration: none; background-size: 100% 1px; color: var(--accent-hover); }
