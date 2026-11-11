@@ -16,7 +16,7 @@ const apuseni = [
   {
     name: 'Doda Pilii headwaters',
     tag: 'Small water',
-    photo: 'river12',
+    photo: 'doda-pilii-water',
     text: 'The upper river and its side streams around Doda Pilii, inside the Apuseni Nature Park. Small, clear, technical water for short casts and careful wading.',
     species: 'Wild brown trout',
   },
@@ -150,6 +150,37 @@ const bucovina = [
           </article>
         ))}
       </div>
+      <div class="prose">
+        <h2>Why travel to Bucovina?</h2>
+        <p>Bucovina is the wooded north of Romania, a land of painted monasteries, wooden villages and long mountain valleys. Life here still follows the seasons, the welcome is generous, and the rivers run clear through spruce forest.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="bucovina-rarau" alt="The Pietrele Doamnei rock towers above spruce forest on Rarău" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Spectacular nature</div>
+            <h3>Rarău and Giumalău</h3>
+            <p>The two massifs that rise above Câmpulung Moldovenesc, with the limestone towers of Pietrele Doamnei, the Lady's Rocks, on the skyline. Spruce forest, alpine meadows and marked trails for hiking, mountain biking and wildlife watching, a short drive from the Moldova river.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="bucovina-voronet" alt="Voroneț Monastery with its painted outer walls" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Well preserved history</div>
+            <h3>The painted monasteries</h3>
+            <p>Voroneț, Humor, Moldovița and Sucevița, their outer walls covered in frescoes painted in the 15th and 16th centuries. They are UNESCO World Heritage sites, and Voroneț, famous for its blue, stands just outside Gura Humorului.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame ratio-32"><Photo class="photo" src="bucovina-ciocanesti" alt="A house in Ciocănești painted with traditional motifs" /></div>
+          <div class="card-body">
+            <div class="eyebrow">Unbelievable places</div>
+            <h3>Ciocănești</h3>
+            <p>A village on the Bistrița Aurie where the houses are painted with the same traditional motifs as the region's decorated Easter eggs. It has a museum of painted eggs, and the river runs right past it.</p>
+          </div>
+        </article>
+      </div>
+      <p class="credit">Photos: <a href="https://commons.wikimedia.org/wiki/File:Pietrele_Doamnei_and_Piatra_%C8%98oimului_rocks.jpg" rel="noopener">Constantin I. Barbu</a>, <a href="https://commons.wikimedia.org/wiki/File:M%C4%83n%C4%83stirea_Vorone%C8%9B_vedere_laterala_08.jpg" rel="noopener">Mihai Raducanu</a>, <a href="https://commons.wikimedia.org/wiki/File:Cioc%C4%83ne%C8%99ti,_Suceava.05.jpg" rel="noopener">Nenea hartia</a>, via Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener license">CC BY-SA 4.0</a>, cropped.</p>
     </div>
   </section>
 
@@ -187,5 +218,8 @@ const bucovina = [
   .region-dark .region-head .facts span:nth-child(odd) { color: var(--on-dark-2); }
   .region-dark :global(.region-map) { background-color: var(--dark-2); box-shadow: inset 0 0 0 1px rgba(245, 242, 236, .08); }
   .region-dark .card { border-color: transparent; color: var(--ink); }
+  .credit { margin-top: calc(-1 * clamp(16px, 3vw, 40px)); font-size: 12px; line-height: 1.5; color: var(--muted); }
+  .region-dark .credit { color: var(--on-dark-2); }
+  .region-dark .credit a { color: var(--on-dark); text-decoration: underline; text-underline-offset: 3px; }
   .region-dark + .page-body { padding-top: clamp(40px, 5vw, 72px); }
 </style>
